@@ -57,7 +57,7 @@ public:
       G4LogicalVolume *L2PlaneLogInner;
       G4LogicalVolume *L1PlaneLogOuter;
       G4LogicalVolume *L2PlaneLogOuter;
-
+      G4LogicalVolume *volumeLogical;
 
 
 
@@ -65,8 +65,8 @@ private:
 	  G4Material *worldMaterial;
 	  G4Material *ScintMaterial;
       G4Material *Vacuum;
-      G4Material *BPMaterial;
-      G4Material *INOX;
+      G4Material *LXe;
+
 
 
 

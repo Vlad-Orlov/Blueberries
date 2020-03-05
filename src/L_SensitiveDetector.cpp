@@ -63,7 +63,7 @@ G4bool L_SensitiveDetector::ProcessHits(G4Step* aStep,
     const G4DynamicParticle *aParticle = aTrack->GetDynamicParticle();
 
 
-    if (aParticle->GetCharge() == 0) return false;
+//    if (aParticle->GetCharge() == 0) return false;
 
     L_Hit* newHit = new L_Hit();
 
@@ -80,10 +80,10 @@ G4bool L_SensitiveDetector::ProcessHits(G4Step* aStep,
 	newHit->myData.Py = aTrack->GetMomentum().y();
 	newHit->myData.Pz = aTrack->GetMomentum().z();
 
-    if (PreName == "L1PlaneInner" && PostName == "World") newHit->myData.StationID = 1;
-    else if (PreName == "L1PlaneOuter" && PostName == "World") newHit->myData.StationID = 2;
-    else if (PreName == "L2PlaneInner" && PostName == "World") newHit->myData.StationID = 3;
-    else if (PreName == "L2PlaneOuter" && PostName == "World") newHit->myData.StationID = 4;
+         if (PreName == "volume" && PostName == "L1PlaneInner") newHit->myData.StationID = 1;
+    else if (PreName == "volume" && PostName == "L1PlaneOuter") newHit->myData.StationID = 2;
+    else if (PreName == "volume" && PostName == "L2PlaneInner") newHit->myData.StationID = 3;
+    else if (PreName == "volume" && PostName == "L2PlaneOuter") newHit->myData.StationID = 4;
     else return false;
 
 
