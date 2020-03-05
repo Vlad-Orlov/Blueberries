@@ -15,9 +15,9 @@
 
 namespace LConst{
 
-    const G4double worldSizeX = 2*m;
-    const G4double worldSizeY = 2*m;
-    const G4double worldSizeZ = 8*m;
+    const G4double worldSizeX = 1*m;
+    const G4double worldSizeY = 1*m;
+    const G4double worldSizeZ = 1*m;
 
 
     const G4double BPOuterRadius = 31*mm;
