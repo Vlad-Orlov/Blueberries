@@ -47,7 +47,7 @@ public:
 public:
 	  G4VPhysicalVolume* Construct();
 	  void ConstructSDandField();
-
+      void DefineOpticalBorders();
 	  void DefineMateials();
 	  G4VPhysicalVolume* DefineVolumes();
       L_SensitiveDetector *LSD;

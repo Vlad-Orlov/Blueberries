@@ -85,7 +85,7 @@ void L_DetectorConstruction::DefineMateials() {
     for (int i=0; i<num; i++) {
         WaveLength[i] = (300 + i*10)*nanometer;
         Absorption[i] = 100*m;      // Fake number for no absorption
-        AirAbsorption[i] = 100*m;   // Place small value to kill photons
+        AirAbsorption[i] = 0.01*m;   // Place small value to kill photons
         AirRefractiveIndex[i] = 1.; // Rough air refraction
         PhotonEnergy[num - (i+1)] = twopi*hbarc/WaveLength[i];
         /* Absorption is given per length and G4 needs mean free path
@@ -117,7 +117,7 @@ void L_DetectorConstruction::DefineMateials() {
     G4MaterialPropertiesTable* Scnt_MPT =new G4MaterialPropertiesTable();
     Scnt_MPT->AddProperty("FASTCOMPONENT", Scnt_PP, Scnt_FAST, NUMENTRIES);
     Scnt_MPT->AddProperty("SLOWCOMPONENT", Scnt_PP, Scnt_SLOW, NUMENTRIES);
-    Scnt_MPT->AddConstProperty("SCINTILLATIONYIELD", 1./keV);
+    Scnt_MPT->AddConstProperty("SCINTILLATIONYIELD", 1/keV);
     Scnt_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
     Scnt_MPT->AddConstProperty("FASTTIMECONSTANT",  1.*ns);
     Scnt_MPT->AddConstProperty("SLOWTIMECONSTANT", 10.*ns);
@@ -126,12 +126,16 @@ void L_DetectorConstruction::DefineMateials() {
     Scnt_MPT->AddProperty("ABSLENGTH", PhotonEnergy, QuartzAbsorption, num);
     LXe->SetMaterialPropertiesTable(Scnt_MPT);
 
+    G4MaterialPropertiesTable* AirMPT = new G4MaterialPropertiesTable();
+    AirMPT->AddProperty("RINDEX", PhotonEnergy, AirRefractiveIndex, num);
+    AirMPT->AddProperty("ABSLENGTH", PhotonEnergy, AirAbsorption, num);
 
 
 
     Vacuum = new G4Material( "Galactic", z=1., a=1.01*g/mole, density= universe_mean_density,
                              kStateGas, 2.73*kelvin, 3.e-18*pascal );
 
+    Vacuum->SetMaterialPropertiesTable(AirMPT);
 
 }
 
@@ -248,9 +252,45 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
     ////////////////////////////////////////////////////////
 
 
-
+    DefineOpticalBorders();
 
     G4cout << "_____________________________________________Volumes are made" << G4endl;
     return worldPhysical;
+}
+
+// Definition of absorbtion surfaces
+void L_DetectorConstruction::DefineOpticalBorders()
+{
+    const G4int num1 = 2;
+    G4double Ephoton[num1] = {1.5*eV, 5.8*eV};
+
+    G4OpticalSurface* OpVolumeKillSurface =
+            new G4OpticalSurface("VolumeKillSurface");
+    OpVolumeKillSurface->SetType(dielectric_metal);
+    OpVolumeKillSurface->SetFinish(polished);
+    OpVolumeKillSurface->SetModel(glisur);
+
+    G4double ReflectivityKill[num1] = {0., 0.};
+    G4double EfficiencyKill[num1] = {1., 1.};
+    G4MaterialPropertiesTable* VolumeKill = new G4MaterialPropertiesTable();
+    VolumeKill->AddProperty("REFLECTIVITY", Ephoton, ReflectivityKill, num1);
+    VolumeKill->AddProperty("EFFICIENCY",   Ephoton, EfficiencyKill,   num1);
+    OpVolumeKillSurface->SetMaterialPropertiesTable(VolumeKill);
+
+    G4OpticalSurface* quartzSurface = new G4OpticalSurface("quartzBorder");
+    quartzSurface->SetType(dielectric_dielectric);
+
+
+    new G4LogicalSkinSurface("DetectorAbsSurface",
+                                 L1PlaneLogInner, OpVolumeKillSurface);
+
+    new G4LogicalSkinSurface("DetectorAbsSurface",
+                                 L2PlaneLogInner, OpVolumeKillSurface);
+
+    new G4LogicalSkinSurface("DetectorAbsSurface",
+                                 L1PlaneLogOuter, OpVolumeKillSurface);
+
+    new G4LogicalSkinSurface("DetectorAbsSurface",
+                                 L2PlaneLogOuter, OpVolumeKillSurface);
 }
 
