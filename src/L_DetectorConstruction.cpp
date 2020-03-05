@@ -87,100 +87,25 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
                                                          false,
                                                          0);
 
-    G4VSolid *ExtSolid = new G4Tubs("ExtTube",	// name
-                                    0.,											// inner radius
-                                    LConst::BPOuterRadius,						// outer radius
-                                    LConst::worldSizeZ/2.,							// dZ/2
-                                    0,											// theta start
-                                    twopi);										// theta of sector
-
 
     G4Transform3D Tr(G4RotationMatrix(), G4ThreeVector(0,0,0));
 
 
-
-
-    G4VSolid *BPSolid = new G4Tubs("BeamPipe",			// name
-                                   LConst::BPInnerRadius,						// inner radius
-                                   LConst::BPOuterRadius,						// outer radius
-                                   (LConst::worldSizeZ/2. + LConst::BeamStart)/2.,  // dZ/2
-                                   0,											// theta start
-                                   twopi);										// theta of sector
-
-    G4LogicalVolume *BPLogical = new G4LogicalVolume(BPSolid,
-                                                     BPMaterial,
-                                                     "BeamPipe");
-    G4VPhysicalVolume *BPPhysical =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector(0.,0., (- LConst::worldSizeZ/2. + LConst::BeamStart)/2.),
-                BPLogical,
-                "BeamPipe",
-                worldLogical,
-                false,
-                0);
-
-    G4VSolid *VELOsphere = new G4Sphere("VELOsphere",
-                                        LConst::sphereInnerR,
-                                        LConst::sphereOuterR,
-                                        0,
-                                        twopi, //LConst::sphereTheta*2.,
-                                        0,
-                                        LConst::sphereTheta);
-    G4SubtractionSolid *VELOsphereSolid = new G4SubtractionSolid("VELOsphere", VELOsphere, ExtSolid);
-
-    G4LogicalVolume *VELOsphereLog = new G4LogicalVolume(VELOsphereSolid,
-                                                         INOX,
-                                                         "VELOsphere");
-
-    G4RotationMatrix *Rm = new G4RotationMatrix();
-    Rm->rotateX(pi);
-
-    G4VPhysicalVolume *VELOspherePhys =  new G4PVPlacement(
-                Rm,
-                G4ThreeVector(0.,0., (LConst::sphereCenter)),
-                VELOsphereLog,
-                "VELOsphere",
-                worldLogical,
-                false,
-                0);
-
-
-
-
-    //    G4VSolid *BPVSolid = new G4Tubs("BeamPipeVacuum",               // name
-    //            0.,                                                     // inner radius
-    //            LConst::BPInnerRadius,                              	// outer radius
-    //            (LConst::worldSizeZ/2. + LConst::BeamStart)/2.,                                  // dZ/2
-    //            0,                                                      // theta start
-    //            twopi);                                                 // theta of sector
-
-    //    G4LogicalVolume *BPVLogical = new G4LogicalVolume(BPVSolid,
-    //            Vacuum,
-    //            "BeamPipeVacuum");
-    //    G4VPhysicalVolume *BPVPhysical =  new G4PVPlacement(
-    //            new G4RotationMatrix(),
-    //            G4ThreeVector(0.,0.,(LConst::worldSizeZ/2. + LConst::BeamStart)/2.),
-    //            BPVLogical,
-    //            "BeamPipe",
-    //            worldLogical,
-    //            false,
-    //            0);
-
-
     ///////////////////////////////////////////////////////
-    G4VSolid *L1SolidPlane= new G4Box("L1Plane",
-                                      100*cm,
-                                      100*cm,
-                                      1*mm);
-    G4SubtractionSolid *L1Solid = new G4SubtractionSolid("L1Plane",
-                                                         L1SolidPlane,
-                                                         ExtSolid);
-    L1PlaneLogOuter = new G4LogicalVolume(L1Solid,
-                                     Vacuum,
-                                     "L1PlaneOuter");
+    G4VSolid *L1SolidPlane = new G4Box("L1Plane",
+                                      LConst::detector_thickness/2.,
+                                      LConst::box_height/2.,
+                                      LConst::box_width/2.);
+
+    L1PlaneLogOuter = new G4LogicalVolume(L1SolidPlane,
+                                                Vacuum,
+                                       "L1PlaneOuter");
+
+    G4RotationMatrix *Ra = new G4RotationMatrix();
+
     G4VPhysicalVolume *L1PlanePhysOuter =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector(0.,0.,LConst::L1pozZ),
+                Ra,
+                G4ThreeVector((LConst::detector_thickness + LConst::box_width)/2.,0.,0.),
                 L1PlaneLogOuter,
                 "L1PlaneOuter",
                 worldLogical,
@@ -189,18 +114,16 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
     ///////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////
-    G4VSolid *L1SolidIn= new G4Tubs("L1Plane",
-                                    0.,
-                                    LConst::BPOuterRadius,
-                                    1*mm,
-                                    0,
-                                    twopi);
-    L1PlaneLogInner = new G4LogicalVolume(L1SolidIn,
+
+    L1PlaneLogInner = new G4LogicalVolume(L1SolidPlane,
                                      Vacuum,
                                      "L1PlaneInner");
+
+    Ra = new G4RotationMatrix();
+    Ra->rotateY(90*deg);
     G4VPhysicalVolume *L1PlanePhysInner =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector(0.,0.,LConst::L1pozZ),
+                Ra,
+                G4ThreeVector(0.,0.,-(LConst::detector_thickness + LConst::box_width)/2.),
                 L1PlaneLogInner,
                 "L1PlaneInner",
                 worldLogical,
@@ -209,44 +132,35 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
     ////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////
-    G4VSolid *L2SolidPlane= new G4Box("L2Plane",
-                                      100*cm,
-                                      100*cm,
-                                      1*mm);
-    G4SubtractionSolid *L2Solid = new G4SubtractionSolid("L2Plane",
-                                                         L2SolidPlane,
-                                                         ExtSolid);
-    L2PlaneLogOuter = new G4LogicalVolume(L2Solid,
+
+    L2PlaneLogOuter = new G4LogicalVolume(L1SolidPlane,
                                      Vacuum,
                                      "L2PlaneOuter");
-//    G4VPhysicalVolume *L2PlanePhysOuter =  new G4PVPlacement(
-//                new G4RotationMatrix(),
-//                G4ThreeVector(0.,0.,LConst::L2pozZ),
-//                L2PlaneLogOuter,
-//                "L2PlaneOuter",
-//                worldLogical,
-//                false,
-//                0);
+
+    G4VPhysicalVolume *L2PlanePhysOuter =  new G4PVPlacement(
+                Ra,
+                G4ThreeVector(0.,0.,(LConst::detector_thickness + LConst::box_width)/2.),
+                L2PlaneLogOuter,
+                "L2PlaneOuter",
+                worldLogical,
+                false,
+                0);
     ////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////
-    G4VSolid *L2SolidIn= new G4Tubs("L2Plane",
-                                    0.,
-                                    LConst::BPOuterRadius,
-                                    1*mm,
-                                    0,
-                                    twopi);
-    L2PlaneLogInner = new G4LogicalVolume(L2SolidIn,
+
+    L2PlaneLogInner = new G4LogicalVolume(L1SolidPlane,
                                      Vacuum,
                                      "L2PlaneInner");
-//    G4VPhysicalVolume *L2PlanePhysInner =  new G4PVPlacement(
-//                new G4RotationMatrix(),
-//                G4ThreeVector(0.,0.,LConst::L2pozZ),
-//                L2PlaneLogInner,
-//                "L2PlaneInner",
-//                worldLogical,
-//                false,
-//                0);
+
+    G4VPhysicalVolume *L2PlanePhysInner =  new G4PVPlacement(
+                new G4RotationMatrix(),
+                G4ThreeVector(-(LConst::detector_thickness + LConst::box_width)/2.,0.,0.),
+                L2PlaneLogInner,
+                "L2PlaneInner",
+                worldLogical,
+                false,
+                0);
     ////////////////////////////////////////////////////////
 
 

@@ -57,7 +57,10 @@ namespace LConst{
     const G4double innerRadOut = BPOuterRadius;
     const G4double outerRadOut = 10*cm;
 
-
+    const G4double box_width  = 50.*cm;
+    const G4double box_height = 2.*cm;
+    const G4double detector_thickness  = 1.*mm;
+    const G4double mirror_thickness  = 1.*mm;
 
 }
 
