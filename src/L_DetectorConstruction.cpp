@@ -49,6 +49,8 @@ void L_DetectorConstruction::DefineMateials() {
             new G4Element("Nitrogen", symbol = "N", z = 7., a = 14.01*g/mole);
     G4Element* O =
             new G4Element("Oxygen", symbol = "O", z = 8., a = 16.00*g/mole);
+    G4Element* Al =
+            new G4Element("Aluminum", symbol = "Al", z = 13., a = 26.98*g/mole);
     G4Element* elementXe =
             new G4Element("Xenon","Xe",54.,131.29*g/mole);
 
@@ -57,6 +59,9 @@ void L_DetectorConstruction::DefineMateials() {
     Air->AddElement(N, fractionmass = 0.7);
     Air->AddElement(O, fractionmass = 0.3);
     worldMaterial = Air;
+
+    AluminumMirr = new G4Material("mirrAluminum", density = 2.7*g/cm3, ncomponents = 1);
+    AluminumMirr->AddElement(Al, fractionmass = 1.0);
 
     LXe =
             new G4Material ("LXe", 3.02*g/cm3, 1, kStateLiquid, 173.15*kelvin, 1.5*atmosphere);
@@ -85,9 +90,10 @@ void L_DetectorConstruction::DefineMateials() {
     for (int i=0; i<num; i++) {
         WaveLength[i] = (300 + i*10)*nanometer;
         Absorption[i] = 100*m;      // Fake number for no absorption
-        AirAbsorption[i] = 0.01*m;   // Place small value to kill photons
+        AirAbsorption[i] = 100*m;   // Place small value to kill photons
         AirRefractiveIndex[i] = 1.; // Rough air refraction
         PhotonEnergy[num - (i+1)] = twopi*hbarc/WaveLength[i];
+
         /* Absorption is given per length and G4 needs mean free path
          length, calculate it here
          mean free path length - taken as probablility equal 1/e
@@ -250,6 +256,72 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
                 false,
                 0);
     ////////////////////////////////////////////////////////
+
+
+
+    //////////////////// Mirrors at the top and bottom of the volume///////////////////////////////
+
+
+    G4VSolid *mirrorSolid = new G4Box("mirror",
+                                      LConst::box_width/2,
+                                      LConst::mirror_thickness/2,
+                                      LConst::box_width/2);
+
+    mirrorLogical = new G4LogicalVolume(mirrorSolid,
+                                        AluminumMirr,
+                                        "mirror");
+
+
+    G4VPhysicalVolume *mirrorTopPhysical = new G4PVPlacement(0,
+                                                             G4ThreeVector(0., (LConst::mirror_thickness/2 + LConst::box_height/2), 0.),
+                                                             mirrorLogical,
+                                                             "mirrorTop",
+                                                             worldLogical,
+                                                             false,
+                                                             0);
+
+    G4VPhysicalVolume *mirrorBottomPhysical = new G4PVPlacement(0,
+                                                                G4ThreeVector(0., -(LConst::mirror_thickness/2 + LConst::box_height/2), 0.),
+                                                                mirrorLogical,
+                                                                "mirrorTop",
+                                                                worldLogical,
+                                                                false,
+                                                                0);
+
+
+    // Define mirror surface
+        const G4int num2 = 36;
+        G4double EfficiencyMirrors[num2];
+        G4double WaveLength[num2];
+        G4double PhotonEnergy[num2];
+        G4double MirrorReflectivity[num2];
+        for (G4int i=0; i<num2; i++) {
+          WaveLength[i] = (300 + i*10)*nanometer;
+          PhotonEnergy[num2 - (i+1)] = twopi*hbarc/WaveLength[i];
+          EfficiencyMirrors[i] = 0.0;
+          MirrorReflectivity[i]=.8;
+        }
+        /*
+        G4double MirrorReflectivity[num2]=
+          {0.87,0.88,0.885,0.89,0.895,0.9,0.905,0.91,0.915,0.92,0.923,0.9245,
+           0.926,0.928,0.93,0.935,0.936,0.937,0.938,0.94,0.94,0.939,0.9382,
+           0.938,0.937,0.937,0.936,0.935,0.934,0.932,0.93,0.928,0.926,0.924,
+           0.922,0.92};
+        */
+        G4MaterialPropertiesTable* MirrorMPT = new G4MaterialPropertiesTable();
+        MirrorMPT->AddProperty("REFLECTIVITY", PhotonEnergy, MirrorReflectivity, num2);
+        MirrorMPT->AddProperty("EFFICIENCY" , PhotonEnergy, EfficiencyMirrors,  num2);
+
+        G4OpticalSurface* OpMirrorSurface = new G4OpticalSurface("MirrorSurface");
+        OpMirrorSurface->SetType(dielectric_metal);
+        OpMirrorSurface->SetFinish(polished);
+        OpMirrorSurface->SetModel(glisur);
+        new G4LogicalSkinSurface("MirrorSurfT",
+                     mirrorLogical, OpMirrorSurface);
+
+
+        OpMirrorSurface->SetMaterialPropertiesTable(MirrorMPT);
+
 
 
     DefineOpticalBorders();
