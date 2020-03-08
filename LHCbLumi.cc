@@ -48,9 +48,10 @@ int main(int argc, char** argv)
     physicsList->SetVerboseLevel(0);
     runManager->SetUserInitialization(physicsList);
 
-\
+
 
     L_RunAction* runAction = new L_RunAction;
+    if (argc == 3) runAction->SetOutputFileName(G4String(argv[2]));
 	runManager->SetUserAction(runAction);
 
     L_PrimaryGeneratorAction* genAction = new L_PrimaryGeneratorAction();

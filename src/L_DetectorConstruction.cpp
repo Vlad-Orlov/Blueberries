@@ -123,7 +123,7 @@ void L_DetectorConstruction::DefineMateials() {
     G4MaterialPropertiesTable* Scnt_MPT =new G4MaterialPropertiesTable();
     Scnt_MPT->AddProperty("FASTCOMPONENT", Scnt_PP, Scnt_FAST, NUMENTRIES);
     Scnt_MPT->AddProperty("SLOWCOMPONENT", Scnt_PP, Scnt_SLOW, NUMENTRIES);
-    Scnt_MPT->AddConstProperty("SCINTILLATIONYIELD", 1/keV);
+    Scnt_MPT->AddConstProperty("SCINTILLATIONYIELD", .1/keV);
     Scnt_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
     Scnt_MPT->AddConstProperty("FASTTIMECONSTANT",  1.*ns);
     Scnt_MPT->AddConstProperty("SLOWTIMECONSTANT", 10.*ns);
@@ -299,7 +299,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
           WaveLength[i] = (300 + i*10)*nanometer;
           PhotonEnergy[num2 - (i+1)] = twopi*hbarc/WaveLength[i];
           EfficiencyMirrors[i] = 0.0;
-          MirrorReflectivity[i]=.8;
+          MirrorReflectivity[i]=0.9800000000000004; //ya tut
         }
         /*
         G4double MirrorReflectivity[num2]=
