@@ -1,12 +1,12 @@
 /*
- * L_PrimaryGeneratorAction.h
+ * B_PrimaryGeneratorAction.h
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#ifndef SRC_L_PRIMARYGENERATORACTION_H_
-#define SRC_L_PRIMARYGENERATORACTION_H_
+#ifndef SRC_B_PrimaryGeneratorAction_H_
+#define SRC_B_PrimaryGeneratorAction_H_
 
 #include <G4VUserPrimaryGeneratorAction.hh>
 #include "globals.hh"
@@ -30,7 +30,7 @@
 #include "TChain.h"
 
 #include "Pythia8/Pythia.h"
-#include "LConst.hh"
+#include "BConst.hh"
 #include <time.h>
 
 #include "Randomize.hh"
@@ -42,10 +42,10 @@ class G4VPrimaryGenerator;
 class G4ParticleGun;
 class G4Event;
 
-class L_PrimaryGeneratorAction: public G4VUserPrimaryGeneratorAction {
+class B_PrimaryGeneratorAction: public G4VUserPrimaryGeneratorAction {
 public:
-    L_PrimaryGeneratorAction();
-    virtual ~L_PrimaryGeneratorAction();
+    B_PrimaryGeneratorAction();
+    virtual ~B_PrimaryGeneratorAction();
 public:
     void GeneratePrimaries(G4Event* anEvent);
 
@@ -74,4 +74,4 @@ private:
 
 
 
-#endif /* SRC_L_PrimaryGeneratorAction_H_ */
+#endif /* SRC_B_PrimaryGeneratorAction_H_ */

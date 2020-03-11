@@ -1,29 +1,29 @@
 /*
- * L_DetectorConstruction.cpp
+ * B_DetectorConstruction.cpp
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#include "L_DetectorConstruction.h"
+#include "B_DetectorConstruction.h"
 
 
-L_DetectorConstruction::L_DetectorConstruction() {
+B_DetectorConstruction::B_DetectorConstruction() {
     DefineMateials();
 
 }
 
-L_DetectorConstruction::~L_DetectorConstruction() {
+B_DetectorConstruction::~B_DetectorConstruction() {
 
 }
 
-G4VPhysicalVolume* L_DetectorConstruction::Construct() {
+G4VPhysicalVolume* B_DetectorConstruction::Construct() {
     DefineMateials();
     return DefineVolumes();
 }
 
-void L_DetectorConstruction::ConstructSDandField() {
-    LSD = new L_SensitiveDetector("LSD");
+void B_DetectorConstruction::ConstructSDandField() {
+    LSD = new B_SensitiveDetector("LSD");
     G4SDManager::GetSDMpointer()->AddNewDetector(LSD);
 
     L1PlaneLogInner->SetSensitiveDetector(LSD);
@@ -35,7 +35,7 @@ void L_DetectorConstruction::ConstructSDandField() {
     //    G4cout << "_____________________________________________Detectors are made" << G4endl;
 }
 
-void L_DetectorConstruction::DefineMateials() {
+void B_DetectorConstruction::DefineMateials() {
     G4String symbol;
     G4double a, z, density;
     G4int ncomponents, natoms;
@@ -145,12 +145,12 @@ void L_DetectorConstruction::DefineMateials() {
 
 }
 
-G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
+G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
     G4VSolid *worldSolid = new G4Box("World",
-                                     LConst::worldSizeX/2,
-                                     LConst::worldSizeY/2,
-                                     LConst::worldSizeZ/2);
+                                     BConst::worldSizeX/2,
+                                     BConst::worldSizeY/2,
+                                     BConst::worldSizeZ/2);
 
     G4LogicalVolume *worldLogical = new G4LogicalVolume(worldSolid,
                                                         Vacuum, // worldMaterial,
@@ -166,9 +166,9 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
 
     G4VSolid *volumeSolid = new G4Box("volume",
-                                     LConst::box_width/2,
-                                     LConst::box_height/2,
-                                     LConst::box_width/2);
+                                     BConst::box_width/2,
+                                     BConst::box_height/2,
+                                     BConst::box_width/2);
 
     volumeLogical = new G4LogicalVolume(volumeSolid,
                                         LXe,
@@ -187,9 +187,9 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
     ///////////////////////////////////////////////////////
     G4VSolid *L1SolidPlane = new G4Box("L1Plane",
-                                      LConst::detector_thickness/2.,
-                                      LConst::box_height/2.,
-                                      LConst::box_width/2.);
+                                      BConst::detector_thickness/2.,
+                                      BConst::box_height/2.,
+                                      BConst::box_width/2.);
 
     L1PlaneLogOuter = new G4LogicalVolume(L1SolidPlane,
                                                 Vacuum,
@@ -199,7 +199,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
     G4VPhysicalVolume *L1PlanePhysOuter =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector((LConst::detector_thickness + LConst::box_width)/2.,0.,0.),
+                G4ThreeVector((BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
                 L1PlaneLogOuter,
                 "L1PlaneOuter",
                 worldLogical,
@@ -217,7 +217,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
     Ra->rotateY(90*deg);
     G4VPhysicalVolume *L1PlanePhysInner =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector(0.,0.,-(LConst::detector_thickness + LConst::box_width)/2.),
+                G4ThreeVector(0.,0.,-(BConst::detector_thickness + BConst::box_width)/2.),
                 L1PlaneLogInner,
                 "L1PlaneInner",
                 worldLogical,
@@ -233,7 +233,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
     G4VPhysicalVolume *L2PlanePhysOuter =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector(0.,0.,(LConst::detector_thickness + LConst::box_width)/2.),
+                G4ThreeVector(0.,0.,(BConst::detector_thickness + BConst::box_width)/2.),
                 L2PlaneLogOuter,
                 "L2PlaneOuter",
                 worldLogical,
@@ -249,7 +249,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
     G4VPhysicalVolume *L2PlanePhysInner =  new G4PVPlacement(
                 new G4RotationMatrix(),
-                G4ThreeVector(-(LConst::detector_thickness + LConst::box_width)/2.,0.,0.),
+                G4ThreeVector(-(BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
                 L2PlaneLogInner,
                 "L2PlaneInner",
                 worldLogical,
@@ -263,9 +263,9 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
 
     G4VSolid *mirrorSolid = new G4Box("mirror",
-                                      LConst::box_width/2,
-                                      LConst::mirror_thickness/2,
-                                      LConst::box_width/2);
+                                      BConst::box_width/2,
+                                      BConst::mirror_thickness/2,
+                                      BConst::box_width/2);
 
     mirrorLogical = new G4LogicalVolume(mirrorSolid,
                                         AluminumMirr,
@@ -273,7 +273,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 
 
     G4VPhysicalVolume *mirrorTopPhysical = new G4PVPlacement(0,
-                                                             G4ThreeVector(0., (LConst::mirror_thickness/2 + LConst::box_height/2), 0.),
+                                                             G4ThreeVector(0., (BConst::mirror_thickness/2 + BConst::box_height/2), 0.),
                                                              mirrorLogical,
                                                              "mirrorTop",
                                                              worldLogical,
@@ -281,7 +281,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
                                                              0);
 
     G4VPhysicalVolume *mirrorBottomPhysical = new G4PVPlacement(0,
-                                                                G4ThreeVector(0., -(LConst::mirror_thickness/2 + LConst::box_height/2), 0.),
+                                                                G4ThreeVector(0., -(BConst::mirror_thickness/2 + BConst::box_height/2), 0.),
                                                                 mirrorLogical,
                                                                 "mirrorTop",
                                                                 worldLogical,
@@ -299,7 +299,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
           WaveLength[i] = (300 + i*10)*nanometer;
           PhotonEnergy[num2 - (i+1)] = twopi*hbarc/WaveLength[i];
           EfficiencyMirrors[i] = 0.0;
-          MirrorReflectivity[i]=0.9800000000000004; //ya tut
+          MirrorReflectivity[i]=0.1; //ya tut
         }
         /*
         G4double MirrorReflectivity[num2]=
@@ -331,7 +331,7 @@ G4VPhysicalVolume* L_DetectorConstruction::DefineVolumes(){
 }
 
 // Definition of absorbtion surfaces
-void L_DetectorConstruction::DefineOpticalBorders()
+void B_DetectorConstruction::DefineOpticalBorders()
 {
     const G4int num1 = 2;
     G4double Ephoton[num1] = {1.5*eV, 5.8*eV};

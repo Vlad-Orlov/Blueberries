@@ -1,22 +1,22 @@
 /*
- * L_SteppingAction.h
+ * B_SteppingAction.h
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#ifndef SRC_L_SteppingAction_H_
-#define SRC_L_SteppingAction_H_
+#ifndef SRC_B_SteppingAction_H_
+#define SRC_B_SteppingAction_H_
 
 #include <G4UserSteppingAction.hh>
-#include "L_PrimaryGeneratorAction.h"
+#include "B_PrimaryGeneratorAction.h"
 
-class L_PrimaryGeneratorAction;
+class B_PrimaryGeneratorAction;
 
-class L_SteppingAction: public G4UserSteppingAction {
+class B_SteppingAction: public G4UserSteppingAction {
 public:
-    L_SteppingAction(L_PrimaryGeneratorAction*);
-    virtual ~L_SteppingAction();
+    B_SteppingAction(B_PrimaryGeneratorAction*);
+    virtual ~B_SteppingAction();
 	void UserSteppingAction(const G4Step*);
 
 	void Reset();
@@ -25,9 +25,9 @@ public:
 private:
     G4double _probOfReflection;
     G4double _particleID;
-    L_PrimaryGeneratorAction* _genAction;
+    B_PrimaryGeneratorAction* _genAction;
     void InternalReflectionProbability(G4double energy,
                                        G4double& probability);
 };
 
-#endif /* SRC_L_SteppingAction_H_ */
+#endif /* SRC_B_SteppingAction_H_ */

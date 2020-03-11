@@ -1,8 +1,8 @@
-#include "L_PhysicsList.h"
+#include "B_PhysicsList.h"
 
 
 // Physics list constructor inherited from QGSP_BERT
-L_PhysicsList::L_PhysicsList() : QGSP_BERT()
+B_PhysicsList::B_PhysicsList() : QGSP_BERT()
 {
     theCerenkovProcess = 0;
     theScintProcess = 0;
@@ -12,13 +12,13 @@ L_PhysicsList::L_PhysicsList() : QGSP_BERT()
     G4cout << "Physics list constructor" << G4endl;
 }
 
-L_PhysicsList::~L_PhysicsList()
+B_PhysicsList::~B_PhysicsList()
 {
     delete theCerenkovProcess;
     delete theScintProcess;
 }
 
-void L_PhysicsList::ConstructParticle()
+void B_PhysicsList::ConstructParticle()
 {
     //  Constructing HEP particles from base physics list
     //  and adding OpticalPhoton to them
@@ -28,7 +28,7 @@ void L_PhysicsList::ConstructParticle()
 }
 
 
-void L_PhysicsList::ConstructProcess()
+void B_PhysicsList::ConstructProcess()
 {
     //  Constructing processes from base physics list and adding
     //  Cherenkov process and optical processes
@@ -40,7 +40,7 @@ void L_PhysicsList::ConstructProcess()
 
 
 
-void L_PhysicsList::ConstructOp()
+void B_PhysicsList::ConstructOp()
 {
 
 
@@ -97,7 +97,7 @@ void L_PhysicsList::ConstructOp()
 }
 
 
-void L_PhysicsList::SetVerbose(G4int verbose)
+void B_PhysicsList::SetVerbose(G4int verbose)
 {
     theCerenkovProcess->SetVerboseLevel(verbose);
     theScintProcess->SetVerboseLevel(verbose);

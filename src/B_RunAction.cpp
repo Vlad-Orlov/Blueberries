@@ -1,20 +1,20 @@
 /*
- * L_RunAction.cpp
+ * B_RunAction.cpp
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#include "L_RunAction.h"
+#include "B_RunAction.h"
 
 
-L_RunAction::L_RunAction() { // @suppress("Class members should be properly initialized")
+B_RunAction::B_RunAction() { // @suppress("Class members should be properly initialized")
     // TODO Auto-generated constructor stub
     //	_outputFileName = "data.root";
     timer = new G4Timer();
 }
 
-L_RunAction::~L_RunAction() {
+B_RunAction::~B_RunAction() {
     // TODO Auto-generated destructor stub
 
 
@@ -22,7 +22,7 @@ L_RunAction::~L_RunAction() {
     delete hfile;
 }
 
-void L_RunAction::BeginOfRunAction(const G4Run* run)
+void B_RunAction::BeginOfRunAction(const G4Run* run)
 {
     //inform the runManager to save random number seed
     //	G4RunManager::GetRunManager()->SetRandomNumberStore(false);
@@ -60,7 +60,7 @@ void L_RunAction::BeginOfRunAction(const G4Run* run)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void L_RunAction::EndOfRunAction(const G4Run* )
+void B_RunAction::EndOfRunAction(const G4Run* )
 {
     //	hfile = tree->GetCurrentFile();
     tree->Write();

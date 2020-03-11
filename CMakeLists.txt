@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(LHCbLumi)
+project(Blueberries)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -114,26 +114,24 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.h*)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(LHCbLumi LHCbLumi.cc ${sources} ${headers})
-target_link_libraries(LHCbLumi ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${PYTHIA8_LIBRARIES})
+add_executable(Blueberries Blueberries.cc ${sources} ${headers})
+target_link_libraries(Blueberries ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${PYTHIA8_LIBRARIES})
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
 # build B1. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(LHCbLumi_SCRIPTS
-    #  LHCbLumi.in
-    #  LHCbLumi.out
+set(Blueberries_SCRIPTS
     init_vis.mac
     gui.mac
     run.mac
-    LHCbLumi.cc
+    Blueberries.cc
     vis.mac
     vis_file.mac
     PythiaSettings.cmnd
     )
 
-foreach(_script ${LHCbLumi_SCRIPTS})
+foreach(_script ${Blueberries_SCRIPTS})
     configure_file(
         ${PROJECT_SOURCE_DIR}/${_script}
         ${PROJECT_BINARY_DIR}/${_script}
@@ -145,12 +143,11 @@ endforeach()
 # For internal Geant4 use - but has no effect if you build this
 # example standalone
 #
-add_custom_target(L DEPENDS LHCbLumi)
+add_custom_target(B DEPENDS Blueberries)
 
 #----------------------------------------------------------------------------
-# Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
+# Install the executable to 'bin' directory under CMAKE_INSTALB_PREFIX
 #
-install(TARGETS LHCbLumi DESTINATION bin)
-
+install(TARGETS Blueberries DESTINATION bin)
 
 

@@ -1,26 +1,26 @@
 /*
- * L_SensitiveDetector.h
+ * B_SensitiveDetector.h
  *
  *  Created on: Oct 3, 2018
  *      Author: vsevolod
  */
 
-#ifndef INCLUDE_L_SensitiveDetector_H_
-#define INCLUDE_L_SensitiveDetector_H_
+#ifndef INCLUDE_B_SensitiveDetector_H_
+#define INCLUDE_B_SensitiveDetector_H_
 
 #include <G4VSensitiveDetector.hh>
-#include "L_Hit.h"
+#include "B_Hit.h"
 #include "HitDataStructure.hh"
-#include "L_EventAction.h"
+#include "B_EventAction.h"
 
 class G4HCofThisEvent;
 class G4Step;
 class G4TouchableHistory;
 
-class L_SensitiveDetector: public G4VSensitiveDetector {
+class B_SensitiveDetector: public G4VSensitiveDetector {
 public:
-    L_SensitiveDetector(G4String name);
-    virtual ~L_SensitiveDetector();
+    B_SensitiveDetector(G4String name);
+    virtual ~B_SensitiveDetector();
 
 
 	void Initialize(G4HCofThisEvent*);
@@ -32,9 +32,9 @@ public:
 	void EndOfEvent(G4HCofThisEvent*);
 private:
 
-    L_HitsCollection* _Collection;
+    B_HitsCollection* _Collection;
 	G4String SDname;
 
 };
 
-#endif /* INCLUDE_L_SensitiveDetector_H_ */
+#endif /* INCLUDE_B_SensitiveDetector_H_ */

@@ -1,11 +1,11 @@
 /*
- * L_SensitiveDetector.cpp
+ * B_SensitiveDetector.cpp
  *
  *  Created on: Oct 3, 2018
  *      Author: vsevolod
  */
 
-#include "L_SensitiveDetector.h"
+#include "B_SensitiveDetector.h"
 
 #include "G4HCofThisEvent.hh"
 #include "G4RunManager.hh"
@@ -13,20 +13,20 @@
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 
-L_SensitiveDetector::L_SensitiveDetector(G4String name) : // @suppress("Class members should be properly initialized")
+B_SensitiveDetector::B_SensitiveDetector(G4String name) : // @suppress("Class members should be properly initialized")
 G4VSensitiveDetector(name){
 	//  G4RunManager* runManager = G4RunManager::GetRunManager();
 	G4String HCname = "Collection";
 	collectionName.insert(HCname);
 }
 
-L_SensitiveDetector::~L_SensitiveDetector() {
+B_SensitiveDetector::~B_SensitiveDetector() {
 }
 
-void L_SensitiveDetector::Initialize(G4HCofThisEvent* HCE)
+void B_SensitiveDetector::Initialize(G4HCofThisEvent* HCE)
 {
 	_Collection =
-            new L_HitsCollection(SensitiveDetectorName, collectionName[0]);
+            new B_HitsCollection(SensitiveDetectorName, collectionName[0]);
 	static G4int HCID = -1;
 	if (HCID < 0) {
 		HCID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
@@ -37,11 +37,11 @@ void L_SensitiveDetector::Initialize(G4HCofThisEvent* HCE)
 }
 
 
-G4bool L_SensitiveDetector::ProcessHitsL(G4Step* aStep, G4TouchableHistory* hist) {
+G4bool B_SensitiveDetector::ProcessHitsL(G4Step* aStep, G4TouchableHistory* hist) {
 	return ProcessHits(aStep, hist);
 }
 
-G4bool L_SensitiveDetector::ProcessHits(G4Step* aStep,
+G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep,
 		G4TouchableHistory*)
 {
 
@@ -65,7 +65,7 @@ G4bool L_SensitiveDetector::ProcessHits(G4Step* aStep,
 
 //    if (aParticle->GetCharge() == 0) return false;
 
-    L_Hit* newHit = new L_Hit();
+    B_Hit* newHit = new B_Hit();
 
 	newHit->myData.TrackID = aTrack->GetTrackID();
 	newHit->myData.ParentID = aTrack->GetParentID();
@@ -96,7 +96,7 @@ G4bool L_SensitiveDetector::ProcessHits(G4Step* aStep,
 	return true;
 }
 
-void L_SensitiveDetector::EndOfEvent(G4HCofThisEvent*)
+void B_SensitiveDetector::EndOfEvent(G4HCofThisEvent*)
 {
 
 	G4int NbHits = _Collection->entries();

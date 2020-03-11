@@ -15,13 +15,13 @@
 #endif
 
 
-#include "L_DetectorConstruction.h"
-#include "L_PrimaryGeneratorAction.h"
+#include "B_DetectorConstruction.h"
+#include "B_PrimaryGeneratorAction.h"
 
-#include "L_RunAction.h"
-#include "L_EventAction.h"
-#include "L_SteppingAction.h"
-#include "L_PhysicsList.h"
+#include "B_RunAction.h"
+#include "B_EventAction.h"
+#include "B_SteppingAction.h"
+#include "B_PhysicsList.h"
 
 #include "Randomize.hh"
 
@@ -40,27 +40,27 @@ int main(int argc, char** argv)
 	// Run manager initialization
 	G4RunManager* runManager = new G4RunManager;
 
-    G4VUserDetectorConstruction* detector = new L_DetectorConstruction;
+    G4VUserDetectorConstruction* detector = new B_DetectorConstruction;
 	runManager->SetUserInitialization(detector);
 
 
-    G4VModularPhysicsList* physicsList = new L_PhysicsList();
+    G4VModularPhysicsList* physicsList = new B_PhysicsList();
     physicsList->SetVerboseLevel(0);
     runManager->SetUserInitialization(physicsList);
 
 
 
-    L_RunAction* runAction = new L_RunAction;
+    B_RunAction* runAction = new B_RunAction;
     if (argc == 3) runAction->SetOutputFileName(G4String(argv[2]));
 	runManager->SetUserAction(runAction);
 
-    L_PrimaryGeneratorAction* genAction = new L_PrimaryGeneratorAction();
+    B_PrimaryGeneratorAction* genAction = new B_PrimaryGeneratorAction();
 	runManager->SetUserAction(genAction);
 
-    L_SteppingAction* stepAction = new L_SteppingAction(genAction);
+    B_SteppingAction* stepAction = new B_SteppingAction(genAction);
 	runManager->SetUserAction(stepAction);
 
-    L_EventAction* eventAction = new L_EventAction(runAction, stepAction);
+    B_EventAction* eventAction = new B_EventAction(runAction, stepAction);
 	runManager->SetUserAction(eventAction);
 
 

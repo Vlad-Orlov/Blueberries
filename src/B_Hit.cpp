@@ -1,11 +1,11 @@
 /*
- * L_Hit.cpp
+ * B_Hit.cpp
  *
  *  Created on: Oct 3, 2018
  *      Author: vsevolod
  */
 
-#include "L_Hit.h"
+#include "B_Hit.h"
 
 #include "G4VVisManager.hh"
 #include "G4Circle.hh"
@@ -14,32 +14,32 @@
 #include "G4VisAttributes.hh"
 #include "G4UnitsTable.hh"
 
-G4Allocator<L_Hit> L_HitAllocator;
+G4Allocator<B_Hit> B_HitAllocator;
 
-L_Hit::L_Hit() :
+B_Hit::B_Hit() :
   G4VHit()
 {}
 
-L_Hit::~L_Hit() {}
+B_Hit::~B_Hit() {}
 
-L_Hit::L_Hit(const L_Hit& right) :
+B_Hit::B_Hit(const B_Hit& right) :
   G4VHit()
 {
   myData = right.myData;
 }
 
-const L_Hit& L_Hit::operator=(const L_Hit& right)
+const B_Hit& B_Hit::operator=(const B_Hit& right)
 {
   myData = right.myData;
   return *this;
 }
 
-G4int L_Hit::operator==(const L_Hit& right) const
+G4int B_Hit::operator==(const B_Hit& right) const
 {
   return (this == &right) ? 1 : 0;
 }
 
-void L_Hit::Draw()
+void B_Hit::Draw()
 {
   G4VVisManager* pVVisManager = G4VVisManager::GetConcreteInstance();
   if (pVVisManager) {
@@ -55,7 +55,7 @@ void L_Hit::Draw()
   }
 }
 
-void L_Hit::Print()
+void B_Hit::Print()
 {
   /*
   G4cout << "Hit Print: "

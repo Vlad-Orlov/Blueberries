@@ -1,17 +1,17 @@
 /*
- * L_PrimaryGeneratorAction.cpp
+ * B_PrimaryGeneratorAction.cpp
  *
  *  Created on: Feb 25, 2020
  *      Author: vorlov
  */
 
-#include "L_PrimaryGeneratorAction.h"
+#include "B_PrimaryGeneratorAction.h"
 
-L_PrimaryGeneratorAction::L_PrimaryGeneratorAction() {}
+B_PrimaryGeneratorAction::B_PrimaryGeneratorAction() {}
 
-L_PrimaryGeneratorAction::~L_PrimaryGeneratorAction() {}
+B_PrimaryGeneratorAction::~B_PrimaryGeneratorAction() {}
 
-void L_PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
+void B_PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
     G4String particleName = "gamma";
     G4ThreeVector position(24*cm, 30.*cm, 0.); //ya tut

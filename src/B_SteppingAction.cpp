@@ -1,12 +1,12 @@
 /*
- * L_SteppingAction.cpp
+ * B_SteppingAction.cpp
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#include "L_SteppingAction.h"
-#include "L_SensitiveDetector.h"
+#include "B_SteppingAction.h"
+#include "B_SensitiveDetector.h"
 #include "G4Track.hh"
 #include "G4ParticleTypes.hh"
 #include "G4ParticleDefinition.hh"
@@ -16,16 +16,16 @@
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 
-L_SteppingAction::L_SteppingAction(L_PrimaryGeneratorAction *genAction) :
+B_SteppingAction::B_SteppingAction(B_PrimaryGeneratorAction *genAction) :
 _genAction(genAction){
 	Reset();
 	ResetPerEvent();
 }
 
-L_SteppingAction::~L_SteppingAction() {
+B_SteppingAction::~B_SteppingAction() {
 }
 
-void L_SteppingAction::UserSteppingAction(const G4Step* aStep) {
+void B_SteppingAction::UserSteppingAction(const G4Step* aStep) {
     //	G4cout << "_____________________________ step" << G4endl;
     G4Track* aTrack = aStep->GetTrack();
     // G4Track *aTrack = aStep->GetTrack();
@@ -116,18 +116,18 @@ void L_SteppingAction::UserSteppingAction(const G4Step* aStep) {
 
 
 
-void L_SteppingAction::ResetPerEvent(){
+void B_SteppingAction::ResetPerEvent(){
 
 }
 
-void L_SteppingAction::Reset()
+void B_SteppingAction::Reset()
 {
     _probOfReflection = 1.;
     _particleID = 0.;
 }
 
 // This metod is stolen from Leonid's code
-void L_SteppingAction::InternalReflectionProbability(G4double energy,
+void B_SteppingAction::InternalReflectionProbability(G4double energy,
                                                      G4double& probability)
 {
     probability = 1.0;

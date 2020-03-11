@@ -1,11 +1,11 @@
 /*
- * L_EventAction.cpp
+ * B_EventAction.cpp
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#include "L_EventAction.h"
+#include "B_EventAction.h"
 
 
 #include "G4Event.hh"
@@ -19,17 +19,17 @@
 #include "G4SDManager.hh"
 #include "globals.hh"
 
-L_EventAction::L_EventAction(L_RunAction* runact, // @suppress("Class members should be properly initialized")
-        L_SteppingAction* steppingAction) :
+B_EventAction::B_EventAction(B_RunAction* runact, // @suppress("Class members should be properly initialized")
+        B_SteppingAction* steppingAction) :
 		runAction(runact), _steppingAction(steppingAction), printModulo(100)
 {
 	//  theCollectionID = -1;
 }
 
-L_EventAction::~L_EventAction() {
+B_EventAction::~B_EventAction() {
 }
 
-void L_EventAction::BeginOfEventAction(const G4Event* event)
+void B_EventAction::BeginOfEventAction(const G4Event* event)
 {
     G4int eventNum = event->GetEventID();
 
@@ -50,7 +50,7 @@ void L_EventAction::BeginOfEventAction(const G4Event* event)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void L_EventAction::EndOfEventAction(const G4Event* event)
+void B_EventAction::EndOfEventAction(const G4Event* event)
 {
 
 	// Print info about end of the event
@@ -60,12 +60,12 @@ void L_EventAction::EndOfEventAction(const G4Event* event)
 
 	// Get the Hit Collection
 	G4HCofThisEvent* HCE = event->GetHCofThisEvent();
-    L_HitsCollection * THC = 0;
+    B_HitsCollection * THC = 0;
 
 	G4int nHit = 0;
 
 	if (HCE){
-        THC = (L_HitsCollection*)(HCE->GetHC(theCollectionID));
+        THC = (B_HitsCollection*)(HCE->GetHC(theCollectionID));
 	}
 
 	if (0 == THC) return;

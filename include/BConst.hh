@@ -1,19 +1,19 @@
 /*
- * LConst.hh
+ * BConst.hh
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#ifndef INCLUDE_LCONST_HH_
-#define INCLUDE_LCONST_HH_
+#ifndef INCLUDE_BConst_HH_
+#define INCLUDE_BConst_HH_
 
 #include "TMath.h"
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 #include "globals.hh"
 
-namespace LConst{
+namespace BConst{
 
     const G4double worldSizeX = 1*m;
     const G4double worldSizeY = 1*m;
@@ -35,4 +35,4 @@ namespace LConst{
 
 
 
-#endif /* INCLUDE_LCONST_HH_ */
+#endif /* INCLUDE_BConst_HH_ */

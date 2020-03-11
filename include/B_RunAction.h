@@ -1,12 +1,12 @@
 /*
- * L_RunAction.h
+ * B_RunAction.h
  *
  *  Created on: Oct 2, 2018
  *      Author: vsevolod
  */
 
-#ifndef SRC_L_RUNACTION_H_
-#define SRC_L_RUNACTION_H_
+#ifndef SRC_B_RunAction_H_
+#define SRC_B_RunAction_H_
 
 #include <G4UserRunAction.hh>
 
@@ -26,10 +26,10 @@
 #include "TFile.h"
 
 
-class L_RunAction: public G4UserRunAction {
+class B_RunAction: public G4UserRunAction {
 public:
-    L_RunAction();
-    virtual ~L_RunAction();
+    B_RunAction();
+    virtual ~B_RunAction();
 public:
     virtual void BeginOfRunAction(const G4Run* run);
     virtual void   EndOfRunAction(const G4Run* run);
@@ -66,4 +66,4 @@ private:
     G4String _outputFileName = "data.root";
 };
 
-#endif /* SRC_L_RUNACTION_H_ */
+#endif /* SRC_B_RunAction_H_ */

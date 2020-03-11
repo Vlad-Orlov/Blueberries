@@ -22,11 +22,11 @@ class G4OpAbsorption;
 class G4OpRayleigh;
 class G4OpBoundaryProcess;
 
-class L_PhysicsList : public QGSP_BERT
+class B_PhysicsList : public QGSP_BERT
 {
 public:
-    L_PhysicsList();
-    ~L_PhysicsList();
+    B_PhysicsList();
+    ~B_PhysicsList();
 
 protected:
   // Construct phyisics processes and register them

@@ -5,11 +5,11 @@
  *      Author: vsevolod
  */
 
-#ifndef L_DETECTORCONSTRUCTION_H_
-#define L_DETECTORCONSTRUCTION_H_
+#ifndef B_DetectorConstruction_H_
+#define B_DetectorConstruction_H_
 
 #include <G4VUserDetectorConstruction.hh>
-#include "L_SensitiveDetector.h"
+#include "B_SensitiveDetector.h"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -37,12 +37,12 @@
 #include "G4SDManager.hh"
 #include "globals.hh"
 
-#include "LConst.hh"
+#include "BConst.hh"
 
-class L_DetectorConstruction: public G4VUserDetectorConstruction {
+class B_DetectorConstruction: public G4VUserDetectorConstruction {
 public:
-    L_DetectorConstruction();
-    virtual ~L_DetectorConstruction();
+    B_DetectorConstruction();
+    virtual ~B_DetectorConstruction();
 
 public:
 	  G4VPhysicalVolume* Construct();
@@ -50,7 +50,7 @@ public:
       void DefineOpticalBorders();
 	  void DefineMateials();
 	  G4VPhysicalVolume* DefineVolumes();
-      L_SensitiveDetector *LSD;
+      B_SensitiveDetector *LSD;
 
 
       G4LogicalVolume *L1PlaneLogInner;
@@ -75,4 +75,4 @@ private:
 
 };
 
-#endif /* L_DETECTORCONSTRUCTION_H_ */
+#endif /* B_DetectorConstruction_H_ */
