@@ -29,7 +29,7 @@
 #include "TMath.h"
 #include "TChain.h"
 
-#include "Pythia8/Pythia.h"
+//#include "Pythia8/Pythia.h"
 #include "BConst.hh"
 #include <time.h>
 
@@ -49,8 +49,8 @@ public:
 public:
     void GeneratePrimaries(G4Event* anEvent);
 
-private:
-    bool GetEvent(Pythia8::Event event);
+//private:
+//    bool GetEvent(Pythia8::Event event);
 
 private:
     G4ParticleGun *_particleGun = new G4ParticleGun();
@@ -68,8 +68,8 @@ private:
 
     G4int iEv;
 
-    Pythia8::Pythia pythia;
-    Pythia8::Event& PythiaEvent = pythia.event;
+//    Pythia8::Pythia pythia;
+//    Pythia8::Event& PythiaEvent = pythia.event;
 };
 
 

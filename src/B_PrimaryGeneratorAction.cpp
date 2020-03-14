@@ -14,7 +14,7 @@ B_PrimaryGeneratorAction::~B_PrimaryGeneratorAction() {}
 void B_PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
     G4String particleName = "gamma";
-    G4ThreeVector position(24*cm, 30.*cm, 0.); //ya tut
+    G4ThreeVector position(1*cm, 30.*cm, 0.); //ya tut
     G4ThreeVector direction(0,-1,0);
 
     // Default particle kinematics

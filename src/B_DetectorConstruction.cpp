@@ -26,10 +26,10 @@ void B_DetectorConstruction::ConstructSDandField() {
     LSD = new B_SensitiveDetector("LSD");
     G4SDManager::GetSDMpointer()->AddNewDetector(LSD);
 
-    L1PlaneLogInner->SetSensitiveDetector(LSD);
-    L2PlaneLogInner->SetSensitiveDetector(LSD);
-    L1PlaneLogOuter->SetSensitiveDetector(LSD);
-    L2PlaneLogOuter->SetSensitiveDetector(LSD);
+    WestLogical->SetSensitiveDetector(LSD);
+    SouthLogical->SetSensitiveDetector(LSD);
+    NorthLogical->SetSensitiveDetector(LSD);
+    EastLogical->SetSensitiveDetector(LSD);
     volumeLogical->SetSensitiveDetector(LSD);
 
     //    G4cout << "_____________________________________________Detectors are made" << G4endl;
@@ -186,40 +186,39 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
 
     ///////////////////////////////////////////////////////
-    G4VSolid *L1SolidPlane = new G4Box("L1Plane",
-                                      BConst::detector_thickness/2.,
-                                      BConst::box_height/2.,
-                                      BConst::box_width/2.);
+    G4VSolid *detectorSolid = new G4Box("detector",
+                                        BConst::detector_thickness/2.,
+                                        BConst::box_height/2.,
+                                        BConst::box_width/2.);
 
-    L1PlaneLogOuter = new G4LogicalVolume(L1SolidPlane,
-                                                Vacuum,
-                                       "L1PlaneOuter");
+    NorthLogical = new G4LogicalVolume(detectorSolid,
+                                              Vacuum,
+                                      "North");
 
     G4RotationMatrix *Ra = new G4RotationMatrix();
 
-    G4VPhysicalVolume *L1PlanePhysOuter =  new G4PVPlacement(
+    G4VPhysicalVolume *NorthPhysical =  new G4PVPlacement(
                 Ra,
                 G4ThreeVector((BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
-                L1PlaneLogOuter,
-                "L1PlaneOuter",
+                NorthLogical,
+                "North",
                 worldLogical,
                 false,
                 0);
     ///////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////
 
-    L1PlaneLogInner = new G4LogicalVolume(L1SolidPlane,
+    WestLogical = new G4LogicalVolume(detectorSolid,
                                      Vacuum,
-                                     "L1PlaneInner");
+                                     "West");
 
     Ra = new G4RotationMatrix();
     Ra->rotateY(90*deg);
-    G4VPhysicalVolume *L1PlanePhysInner =  new G4PVPlacement(
+    G4VPhysicalVolume *WestPhysical =  new G4PVPlacement(
                 Ra,
                 G4ThreeVector(0.,0.,-(BConst::detector_thickness + BConst::box_width)/2.),
-                L1PlaneLogInner,
-                "L1PlaneInner",
+                WestLogical,
+                "West",
                 worldLogical,
                 false,
                 0);
@@ -227,15 +226,15 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
     ////////////////////////////////////////////////////////
 
-    L2PlaneLogOuter = new G4LogicalVolume(L1SolidPlane,
-                                     Vacuum,
-                                     "L2PlaneOuter");
+    EastLogical = new G4LogicalVolume(detectorSolid,
+                                          Vacuum,
+                                          "East");
 
-    G4VPhysicalVolume *L2PlanePhysOuter =  new G4PVPlacement(
+    G4VPhysicalVolume *EastPhysical =  new G4PVPlacement(
                 Ra,
                 G4ThreeVector(0.,0.,(BConst::detector_thickness + BConst::box_width)/2.),
-                L2PlaneLogOuter,
-                "L2PlaneOuter",
+                EastLogical,
+                "East",
                 worldLogical,
                 false,
                 0);
@@ -243,15 +242,15 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
     ///////////////////////////////////////////////////////
 
-    L2PlaneLogInner = new G4LogicalVolume(L1SolidPlane,
+    SouthLogical = new G4LogicalVolume(detectorSolid,
                                      Vacuum,
-                                     "L2PlaneInner");
+                                     "South");
 
-    G4VPhysicalVolume *L2PlanePhysInner =  new G4PVPlacement(
+    G4VPhysicalVolume *SouthPhysical =  new G4PVPlacement(
                 new G4RotationMatrix(),
                 G4ThreeVector(-(BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
-                L2PlaneLogInner,
-                "L2PlaneInner",
+                SouthLogical,
+                "South",
                 worldLogical,
                 false,
                 0);
@@ -354,15 +353,15 @@ void B_DetectorConstruction::DefineOpticalBorders()
 
 
     new G4LogicalSkinSurface("DetectorAbsSurface",
-                                 L1PlaneLogInner, OpVolumeKillSurface);
+                                 WestLogical, OpVolumeKillSurface);
 
     new G4LogicalSkinSurface("DetectorAbsSurface",
-                                 L2PlaneLogInner, OpVolumeKillSurface);
+                                 SouthLogical, OpVolumeKillSurface);
 
     new G4LogicalSkinSurface("DetectorAbsSurface",
-                                 L1PlaneLogOuter, OpVolumeKillSurface);
+                                 NorthLogical, OpVolumeKillSurface);
 
     new G4LogicalSkinSurface("DetectorAbsSurface",
-                                 L2PlaneLogOuter, OpVolumeKillSurface);
+                                 EastLogical, OpVolumeKillSurface);
 }
 

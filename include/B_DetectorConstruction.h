@@ -53,10 +53,10 @@ public:
       B_SensitiveDetector *LSD;
 
 
-      G4LogicalVolume *L1PlaneLogInner;
-      G4LogicalVolume *L2PlaneLogInner;
-      G4LogicalVolume *L1PlaneLogOuter;
-      G4LogicalVolume *L2PlaneLogOuter;
+      G4LogicalVolume *WestLogical;
+      G4LogicalVolume *SouthLogical;
+      G4LogicalVolume *NorthLogical;
+      G4LogicalVolume *EastLogical;
       G4LogicalVolume *volumeLogical;
       G4LogicalVolume *mirrorLogical;
 
