@@ -253,7 +253,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                                         BConst::box_width/2.);
 
     NorthLogical = new G4LogicalVolume(detectorSolid,
-                                            Bis_MSB,
+                                            SiO2,
                                       "North");
 
     smallMirrorLogical = new G4LogicalVolume(detectorSolid,
@@ -275,8 +275,8 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
 
     WestLogical = new G4LogicalVolume(detectorSolid,
-                                     Bis_MSB,
-                                     "West");
+                                               SiO2,
+                                            "West");
 
     Ra = new G4RotationMatrix();
     Ra->rotateY(90*deg);
@@ -291,8 +291,8 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
     ////////////////////////////////////////////////////////
 
     EastLogical = new G4LogicalVolume(detectorSolid,
-                                          Bis_MSB,
-                                          "East");
+                                               SiO2,
+                                            "East");
 
     G4VPhysicalVolume *EastPhysical =  new G4PVPlacement(
                 Ra,
@@ -305,8 +305,8 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
     ////////////////////////////////////////////////////////
 
     SouthLogical = new G4LogicalVolume(detectorSolid,
-                                     Bis_MSB,
-                                     "South");
+                                                SiO2,
+                                            "South");
 
     G4VPhysicalVolume *SouthPhysical =  new G4PVPlacement(
                 new G4RotationMatrix(),
@@ -451,7 +451,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
           WaveLength[i] = (300 + i*10)*nanometer;
           PhotonEnergy[num2 - (i+1)] = twopi*hbarc/WaveLength[i];
           EfficiencyMirrors[i] = 0.0;
-          MirrorReflectivity[i]=0.8; //ya tut
+          MirrorReflectivity[i]=0.9; //ya tut
         }
 
         G4MaterialPropertiesTable* MirrorMPT = new G4MaterialPropertiesTable();

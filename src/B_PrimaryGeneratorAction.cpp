@@ -13,7 +13,7 @@ B_PrimaryGeneratorAction::~B_PrimaryGeneratorAction() {}
 
 void B_PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
-    G4String particleName = "pi+";
+    G4String particleName = "kaon+";
     G4ThreeVector position(0*cm, 30*cm, 0.*cm); //ya tut
     G4ThreeVector direction(0,-1,0);
 
