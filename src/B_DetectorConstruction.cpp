@@ -2,7 +2,7 @@
  * B_DetectorConstruction.cpp
  *
  *  Created on: Oct 2, 2018
- *      Author: vsevolod
+ *      Author: orlov
  */
 
 #include "B_DetectorConstruction.h"
