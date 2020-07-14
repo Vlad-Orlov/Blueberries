@@ -250,7 +250,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
     G4VSolid *detectorSolid = new G4Box("detector",
                                         BConst::detector_thickness/2.,
                                         BConst::box_height/2.,
-                                        BConst::box_height/2.);
+                                        BConst::box_width/2.);
 
     NorthLogical = new G4LogicalVolume(detectorSolid,
                                             Bis_MSB,
@@ -265,7 +265,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
     G4VPhysicalVolume *NorthPhysical =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector((BConst::detector_thickness + BConst::box_width)/2.,0.,(BConst::box_width - BConst::box_height)/2.),
+                G4ThreeVector((BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
                 NorthLogical,
                 "North",
                 worldLogical,
@@ -282,7 +282,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
     Ra->rotateY(90*deg);
     G4VPhysicalVolume *WestPhysical =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector((BConst::box_width - BConst::box_height)/2., 0, -(BConst::detector_thickness + BConst::box_width)/2.),
+                G4ThreeVector(0., 0, -(BConst::detector_thickness + BConst::box_width)/2.),
                 WestLogical,
                 "West",
                 worldLogical,
@@ -296,7 +296,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
     G4VPhysicalVolume *EastPhysical =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector(-(BConst::box_width - BConst::box_height)/2., 0, (BConst::detector_thickness + BConst::box_width)/2.),
+                G4ThreeVector(0., 0, (BConst::detector_thickness + BConst::box_width)/2.),
                 EastLogical,
                 "East",
                 worldLogical,
@@ -310,7 +310,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
     G4VPhysicalVolume *SouthPhysical =  new G4PVPlacement(
                 new G4RotationMatrix(),
-                G4ThreeVector(-(BConst::detector_thickness + BConst::box_width)/2.,0.,-(BConst::box_width - BConst::box_height)/2.),
+                G4ThreeVector(-(BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
                 SouthLogical,
                 "South",
                 worldLogical,
@@ -322,42 +322,42 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
     /////////////////////Small Mirrors//////////////////
 
 
-    G4VPhysicalVolume *NorthMirrorPhysical =  new G4PVPlacement(
-                Ra,
-                G4ThreeVector(( BConst::box_width - BConst::box_height)/2.,0.,(BConst::box_width - BConst::detector_thickness)/2.-BConst::box_height),
-                smallMirrorLogical,
-                "mirror",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *NorthMirrorPhysical =  new G4PVPlacement(
+//                Ra,
+//                G4ThreeVector(( BConst::box_width - BConst::box_height)/2.,0.,(BConst::box_width - BConst::detector_thickness)/2.-BConst::box_height),
+//                smallMirrorLogical,
+//                "mirror",
+//                volumeLogical,
+//                false,
+//                0);
 
-    G4VPhysicalVolume *SouthMirrorPhysical =  new G4PVPlacement(
-                Ra,
-                G4ThreeVector(-( BConst::box_width - BConst::box_height)/2.,0.,-(BConst::box_width - BConst::detector_thickness)/2. + BConst::box_height),
-                smallMirrorLogical,
-                "mirror",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *SouthMirrorPhysical =  new G4PVPlacement(
+//                Ra,
+//                G4ThreeVector(-( BConst::box_width - BConst::box_height)/2.,0.,-(BConst::box_width - BConst::detector_thickness)/2. + BConst::box_height),
+//                smallMirrorLogical,
+//                "mirror",
+//                volumeLogical,
+//                false,
+//                0);
 
 
-    G4VPhysicalVolume *EastMirrorPhysical =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector(-(BConst::box_width - BConst::detector_thickness)/2.+BConst::box_height, 0., (BConst::box_width - BConst::box_height)/2.),
-                smallMirrorLogical,
-                "mirror",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *EastMirrorPhysical =  new G4PVPlacement(
+//                new G4RotationMatrix(),
+//                G4ThreeVector(-(BConst::box_width - BConst::detector_thickness)/2.+BConst::box_height, 0., (BConst::box_width - BConst::box_height)/2.),
+//                smallMirrorLogical,
+//                "mirror",
+//                volumeLogical,
+//                false,
+//                0);
 
-    G4VPhysicalVolume *WestMirrorPhysical =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector((BConst::box_width - BConst::detector_thickness)/2.-BConst::box_height, 0., -(BConst::box_width - BConst::box_height)/2.),
-                smallMirrorLogical,
-                "mirror",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *WestMirrorPhysical =  new G4PVPlacement(
+//                new G4RotationMatrix(),
+//                G4ThreeVector((BConst::box_width - BConst::detector_thickness)/2.-BConst::box_height, 0., -(BConst::box_width - BConst::box_height)/2.),
+//                smallMirrorLogical,
+//                "mirror",
+//                volumeLogical,
+//                false,
+//                0);
 
 
     //////////////////// WLS tubes //////////////////
@@ -375,41 +375,41 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                                              "wlstube");
 
 
-    G4VPhysicalVolume *wlsSouthPhysical =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector((-BConst::box_width + BConst::wls_tube_diameter)/2.,0., BConst::wls_tube_diameter/2. + BConst::detector_thickness/2.),
-                wls_tubeLogical,
-                "wlsSouth",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *wlsSouthPhysical =  new G4PVPlacement(
+//                new G4RotationMatrix(),
+//                G4ThreeVector((-BConst::box_width + BConst::wls_tube_diameter)/2.,0., BConst::wls_tube_diameter/2. + BConst::detector_thickness/2.),
+//                wls_tubeLogical,
+//                "wlsSouth",
+//                volumeLogical,
+//                false,
+//                0);
 
-    G4VPhysicalVolume *wlsNorthPhysical =  new G4PVPlacement(
-                new G4RotationMatrix(),
-                G4ThreeVector((BConst::box_width - BConst::wls_tube_diameter)/2., 0., -BConst::wls_tube_diameter/2. -BConst::detector_thickness/2.),
-                wls_tubeLogical,
-                "wlsNorth",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *wlsNorthPhysical =  new G4PVPlacement(
+//                new G4RotationMatrix(),
+//                G4ThreeVector((BConst::box_width - BConst::wls_tube_diameter)/2., 0., -BConst::wls_tube_diameter/2. -BConst::detector_thickness/2.),
+//                wls_tubeLogical,
+//                "wlsNorth",
+//                volumeLogical,
+//                false,
+//                0);
 
-    G4VPhysicalVolume *wlsEastPhysical =  new G4PVPlacement(
-                Ra,
-                G4ThreeVector(BConst::wls_tube_diameter/2. + BConst::detector_thickness/2., 0., (BConst::box_width - BConst::wls_tube_diameter)/2.),
-                wls_tubeLogical,
-                "wlsEast",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *wlsEastPhysical =  new G4PVPlacement(
+//                Ra,
+//                G4ThreeVector(BConst::wls_tube_diameter/2. + BConst::detector_thickness/2., 0., (BConst::box_width - BConst::wls_tube_diameter)/2.),
+//                wls_tubeLogical,
+//                "wlsEast",
+//                volumeLogical,
+//                false,
+//                0);
 
-    G4VPhysicalVolume *wlsWestPhysical =  new G4PVPlacement(
-                Ra,
-                G4ThreeVector(-BConst::wls_tube_diameter/2. - BConst::detector_thickness/2. , 0., (-BConst::box_width + BConst::wls_tube_diameter)/2.),
-                wls_tubeLogical,
-                "wlsWest",
-                volumeLogical,
-                false,
-                0);
+//    G4VPhysicalVolume *wlsWestPhysical =  new G4PVPlacement(
+//                Ra,
+//                G4ThreeVector(-BConst::wls_tube_diameter/2. - BConst::detector_thickness/2. , 0., (-BConst::box_width + BConst::wls_tube_diameter)/2.),
+//                wls_tubeLogical,
+//                "wlsWest",
+//                volumeLogical,
+//                false,
+//                0);
 
     //////////////////// Mirrors at the top and bottom of the volume//////////////////
 
@@ -464,8 +464,8 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
         OpMirrorSurface->SetModel(glisur);
         new G4LogicalSkinSurface("MirrorSurfT",
                      mirrorLogical, OpMirrorSurface);
-        new G4LogicalSkinSurface("MirrorSurfT",
-                     smallMirrorLogical, OpMirrorSurface);
+//        new G4LogicalSkinSurface("MirrorSurfT",
+//                     smallMirrorLogical, OpMirrorSurface);
 
         OpMirrorSurface->SetMaterialPropertiesTable(MirrorMPT);
 
@@ -545,8 +545,8 @@ void B_DetectorConstruction::SetVisAttributes()
     detectorVisAtt->SetForceSolid(true);
 
 
-    wls_tubeLogical->SetVisAttributes(wlsVisAtt);
-    smallMirrorLogical->SetVisAttributes(mirrorVisAtt);
+//    wls_tubeLogical->SetVisAttributes(wlsVisAtt);
+//    smallMirrorLogical->SetVisAttributes(mirrorVisAtt);
     NorthLogical->SetVisAttributes(detectorVisAtt);
     EastLogical->SetVisAttributes(detectorVisAtt);
     WestLogical->SetVisAttributes(detectorVisAtt);

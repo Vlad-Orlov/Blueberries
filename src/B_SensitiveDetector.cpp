@@ -80,10 +80,10 @@ G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep,
 	newHit->myData.Py = aTrack->GetMomentum().y();
 	newHit->myData.Pz = aTrack->GetMomentum().z();
 
-         if (PreName == "wlstube" && PostName == "North") newHit->myData.StationID = 1;
-    else if (PreName == "wlstube" && PostName == "South") newHit->myData.StationID = 2;
-    else if (PreName == "wlstube" && PostName == "West") newHit->myData.StationID = 3;
-    else if (PreName == "wlstube" && PostName == "East") newHit->myData.StationID = 4;
+         if (PreName == "volume" && PostName == "North") newHit->myData.StationID = 1;
+    else if (PreName == "volume" && PostName == "South") newHit->myData.StationID = 2;
+    else if (PreName == "volume" && PostName == "West") newHit->myData.StationID = 3;
+    else if (PreName == "volume" && PostName == "East") newHit->myData.StationID = 4;
     else return false;
 
 
