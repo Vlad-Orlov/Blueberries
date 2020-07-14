@@ -13,7 +13,7 @@
 #/run/numberOfThreads 5
 
 
-#/vis/scene/add/axes 
+/vis/scene/add/axes
 
 /run/verbose 0
 /event/verbose 0

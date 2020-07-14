@@ -51,7 +51,7 @@ void B_PhysicsList::ConstructOp()
     // Optical Photon Processes
     theCerenkovProcess = new G4Cerenkov("Cerenkov");
     theScintProcess = new G4Scintillation("Scintillation");
-
+    theWlsProcess = new G4OpWLS();
     G4cout<<" 111 "<<G4endl;
 
     SetVerbose(0);
@@ -89,6 +89,8 @@ void B_PhysicsList::ConstructOp()
             pmanager->AddDiscreteProcess(new G4OpAbsorption());
             pmanager->AddDiscreteProcess(new G4OpRayleigh());
             pmanager->AddDiscreteProcess(new G4OpBoundaryProcess());
+            pmanager->AddDiscreteProcess(theWlsProcess);
+
         }
     }
 

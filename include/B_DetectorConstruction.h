@@ -49,6 +49,7 @@ public:
 	  void ConstructSDandField();
       void DefineOpticalBorders();
 	  void DefineMateials();
+      void SetVisAttributes();
 	  G4VPhysicalVolume* DefineVolumes();
       B_SensitiveDetector *LSD;
 
@@ -59,6 +60,8 @@ public:
       G4LogicalVolume *EastLogical;
       G4LogicalVolume *volumeLogical;
       G4LogicalVolume *mirrorLogical;
+      G4LogicalVolume *wls_tubeLogical;
+      G4LogicalVolume *smallMirrorLogical;
 
 
 
@@ -68,6 +71,8 @@ private:
       G4Material *Vacuum;
       G4Material *AluminumMirr;
       G4Material *LXe;
+      G4Material *SiO2;
+      G4Material *Bis_MSB;
 
 
 

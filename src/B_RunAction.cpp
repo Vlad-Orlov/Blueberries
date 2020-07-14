@@ -30,7 +30,7 @@ void B_RunAction::BeginOfRunAction(const G4Run* run)
     timer->Start();
 
     // Histogramming
-    hfile = new TFile(_outputFileName, "RECREATE", "LHCb Luminometer Simulation Data", 1);
+    hfile = new TFile(_outputFileName, "RECREATE", "Blueberries", 1);
     if (hfile->IsZombie()) exit(-1);
     tree = new TTree("T", "LHCb Luminometer Data Tree");
     //	tree->SetAutoSave(1000000);

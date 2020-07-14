@@ -45,12 +45,16 @@ void B_DetectorConstruction::DefineMateials() {
 
     G4Element* C =
             new G4Element("Carbon", symbol = "C", z = 6., a = 12.01*g/mole);
+    G4Element* H =
+            new G4Element("Hydrogen", symbol = "H", z = 1., a = 1.0*g/mole);
     G4Element* N =
             new G4Element("Nitrogen", symbol = "N", z = 7., a = 14.01*g/mole);
     G4Element* O =
             new G4Element("Oxygen", symbol = "O", z = 8., a = 16.00*g/mole);
     G4Element* Al =
             new G4Element("Aluminum", symbol = "Al", z = 13., a = 26.98*g/mole);
+    G4Element* Si =
+            new G4Element("Silicon", symbol = "Si", z = 14., a = 28.09*g/mole);
     G4Element* elementXe =
             new G4Element("Xenon","Xe",54.,131.29*g/mole);
 
@@ -62,6 +66,11 @@ void B_DetectorConstruction::DefineMateials() {
 
     AluminumMirr = new G4Material("mirrAluminum", density = 2.7*g/cm3, ncomponents = 1);
     AluminumMirr->AddElement(Al, fractionmass = 1.0);
+    // Quartz Material (SiO2)
+    SiO2 =
+            new G4Material("quartz", density = 2.200*g/cm3, ncomponents = 2);
+    SiO2->AddElement(Si, natoms = 1);
+    SiO2->AddElement(O , natoms = 2);
 
     LXe =
             new G4Material ("LXe", 3.02*g/cm3, 1, kStateLiquid, 173.15*kelvin, 1.5*atmosphere);
@@ -112,23 +121,27 @@ void B_DetectorConstruction::DefineMateials() {
 
 
     const G4int NUMENTRIES = 9;
-    G4double Scnt_PP[NUMENTRIES] = {2.0*eV, 2.1*eV, 2.2*eV, 2.3*eV,
-                                    2.4*eV, 2.5*eV, 2.6*eV, 2.7*eV, 2.8*eV };
-    G4double Scnt_FAST[NUMENTRIES] = {0.000134, 0.004432, 0.053991, 0.241971,
-                                       0.398942, 0.000134, 0.004432, 0.053991,0.241971 };
+    G4double Scnt_PP[NUMENTRIES] = {2.0*eV, 2.1*eV, 2.2*eV,
+                                    2.3*eV, 2.4*eV, 2.5*eV,
+                                    2.6*eV, 2.7*eV, 2.8*eV };
+
+    G4double Scnt_FAST[NUMENTRIES] = {0.000134, 0.004432, 0.053991,
+                                      0.241971, 0.398942, 0.000134,
+                                      0.004432, 0.053991, 0.241971};
+
     G4double Scnt_SLOW[NUMENTRIES] = { 0.000010, 0.000020, 0.000030,
-                                       0.004000,0.008000, 0.005000,
-                                       0.020000, 0.001000, 0.000010 };
+                                       0.004000, 0.008000, 0.005000,
+                                       0.020000, 0.001000, 0.000010};
 
     G4MaterialPropertiesTable* Scnt_MPT =new G4MaterialPropertiesTable();
     Scnt_MPT->AddProperty("FASTCOMPONENT", Scnt_PP, Scnt_FAST, NUMENTRIES);
     Scnt_MPT->AddProperty("SLOWCOMPONENT", Scnt_PP, Scnt_SLOW, NUMENTRIES);
-    Scnt_MPT->AddConstProperty("SCINTILLATIONYIELD", .1/keV);
+    Scnt_MPT->AddConstProperty("SCINTILLATIONYIELD", .01/keV);
     Scnt_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
     Scnt_MPT->AddConstProperty("FASTTIMECONSTANT",  1.*ns);
     Scnt_MPT->AddConstProperty("SLOWTIMECONSTANT", 10.*ns);
     Scnt_MPT->AddConstProperty("YIELDRATIO", 0.8);
-    Scnt_MPT->AddProperty("RINDEX", PhotonEnergy, QuartzRefractiveIndex, num);
+//    Scnt_MPT->AddProperty("RINDEX", PhotonEnergy, QuartzRefractiveIndex, num);
     Scnt_MPT->AddProperty("ABSLENGTH", PhotonEnergy, QuartzAbsorption, num);
     LXe->SetMaterialPropertiesTable(Scnt_MPT);
 
@@ -136,12 +149,56 @@ void B_DetectorConstruction::DefineMateials() {
     AirMPT->AddProperty("RINDEX", PhotonEnergy, AirRefractiveIndex, num);
     AirMPT->AddProperty("ABSLENGTH", PhotonEnergy, AirAbsorption, num);
 
+    // Quartz
+    G4MaterialPropertiesTable* QuartzMPT = new G4MaterialPropertiesTable();
+    QuartzMPT->AddProperty("RINDEX", PhotonEnergy, QuartzRefractiveIndex, num);
+    QuartzMPT->AddProperty("ABSLENGTH", PhotonEnergy, QuartzAbsorption, num);
+
+    SiO2->SetMaterialPropertiesTable(QuartzMPT);
 
 
     Vacuum = new G4Material( "Galactic", z=1., a=1.01*g/mole, density= universe_mean_density,
                              kStateGas, 2.73*kelvin, 3.e-18*pascal );
 
     Vacuum->SetMaterialPropertiesTable(AirMPT);
+
+
+    // Wavelength shifter
+
+
+        Bis_MSB = new G4Material("Bis_MSB",density=1.07*g/cm3,ncomponents=2);
+        Bis_MSB->AddElement(H,natoms=22);
+        Bis_MSB->AddElement(C,natoms=24);
+
+
+       G4MaterialPropertiesTable *MPTWLS = new G4MaterialPropertiesTable();
+
+       // BIS absorption
+       G4double waveLength3[7] = {300., 340., 380., 400., 420., 460., 500};
+       G4double photonEnergy5[7];
+       for(int i=0; i<7; i++)
+           photonEnergy5[i] = 1240./waveLength3[i]*eV;
+       G4double absLen3[7] = {10*nm, 10*nm, 10*nm, 1*mm, 200*m, 200*m, 200*m};
+       MPTWLS->AddProperty("WLSABSLENGTH", photonEnergy5, absLen3, 7);
+
+       G4double ppckovEmit[8] = { 2.95 * eV, 2.95 * eV, 2.95 * eV, 2.95 * eV, 2.6401*eV , 3.0402*eV , 3.5403*eV , 3.8404*eV};
+       G4double rindexWLS[8] = { 1.5, 1.5, 1.5, 1.5, 1.504 , 1.505 , 1.515 , 1.52 };
+
+       // BIS reemission
+       G4double waveLength4[16] = {380., 390., 400., 410., 420., 430., 440.,
+                                   450., 460., 470., 480., 490., 500., 510., 520., 530};
+       G4double photonEnergy6[16];
+       for(int i=0; i<16; i++)
+           photonEnergy6[i] = 1240./waveLength4[i]*eV;
+       G4double reEmit4[16] = {0., 0., 0.1, 0.8, 1., 0.8, 0.5,
+                               0.45, 0.3, 0.2, 0.15, 0.1, 0.05, 0.05, 0.05, 0.};
+       MPTWLS->AddProperty("WLSCOMPONENT", photonEnergy6, reEmit4, 16);
+
+       MPTWLS->AddConstProperty("WLSTIMECONSTANT", 3. * ns);
+       MPTWLS-> AddConstProperty("WLSMEANNUMBERPHOTONS", 0.5);
+       MPTWLS->AddProperty("RINDEX", ppckovEmit, rindexWLS, 8)->SetSpline(true);
+       Bis_MSB->SetMaterialPropertiesTable(MPTWLS);
+
 
 }
 
@@ -166,15 +223,15 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
 
     G4VSolid *volumeSolid = new G4Box("volume",
-                                     BConst::box_width/2,
-                                     BConst::box_height/2,
-                                     BConst::box_width/2);
+                                      BConst::box_width/2,
+                                      BConst::box_height/2,
+                                      BConst::box_width/2);
+
 
     volumeLogical = new G4LogicalVolume(volumeSolid,
-                                        LXe,
+                                        SiO2,
                                         "volume");
 
-//    volumeLogical->SetSensitiveDetector(LSD);
 
     G4VPhysicalVolume *volumePhysical = new G4PVPlacement(0,
                                                           G4ThreeVector(),
@@ -185,21 +242,30 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                                                           0);
 
 
-    ///////////////////////////////////////////////////////
+    
+    
+    
+    
+    //////////////// Placement of the detectors ///////////////////////
     G4VSolid *detectorSolid = new G4Box("detector",
                                         BConst::detector_thickness/2.,
                                         BConst::box_height/2.,
-                                        BConst::box_width/2.);
+                                        BConst::box_height/2.);
 
     NorthLogical = new G4LogicalVolume(detectorSolid,
-                                              Vacuum,
+                                            Bis_MSB,
                                       "North");
+
+    smallMirrorLogical = new G4LogicalVolume(detectorSolid,
+                                                   AluminumMirr,
+                                                  "small_mirror");
+
 
     G4RotationMatrix *Ra = new G4RotationMatrix();
 
     G4VPhysicalVolume *NorthPhysical =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector((BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
+                G4ThreeVector((BConst::detector_thickness + BConst::box_width)/2.,0.,(BConst::box_width - BConst::box_height)/2.),
                 NorthLogical,
                 "North",
                 worldLogical,
@@ -209,14 +275,14 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
 
     WestLogical = new G4LogicalVolume(detectorSolid,
-                                     Vacuum,
+                                     Bis_MSB,
                                      "West");
 
     Ra = new G4RotationMatrix();
     Ra->rotateY(90*deg);
     G4VPhysicalVolume *WestPhysical =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector(0.,0.,-(BConst::detector_thickness + BConst::box_width)/2.),
+                G4ThreeVector((BConst::box_width - BConst::box_height)/2., 0, -(BConst::detector_thickness + BConst::box_width)/2.),
                 WestLogical,
                 "West",
                 worldLogical,
@@ -224,15 +290,13 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                 0);
     ////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////
-
     EastLogical = new G4LogicalVolume(detectorSolid,
-                                          Vacuum,
+                                          Bis_MSB,
                                           "East");
 
     G4VPhysicalVolume *EastPhysical =  new G4PVPlacement(
                 Ra,
-                G4ThreeVector(0.,0.,(BConst::detector_thickness + BConst::box_width)/2.),
+                G4ThreeVector(-(BConst::box_width - BConst::box_height)/2., 0, (BConst::detector_thickness + BConst::box_width)/2.),
                 EastLogical,
                 "East",
                 worldLogical,
@@ -240,15 +304,13 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                 0);
     ////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////
-
     SouthLogical = new G4LogicalVolume(detectorSolid,
-                                     Vacuum,
+                                     Bis_MSB,
                                      "South");
 
     G4VPhysicalVolume *SouthPhysical =  new G4PVPlacement(
                 new G4RotationMatrix(),
-                G4ThreeVector(-(BConst::detector_thickness + BConst::box_width)/2.,0.,0.),
+                G4ThreeVector(-(BConst::detector_thickness + BConst::box_width)/2.,0.,-(BConst::box_width - BConst::box_height)/2.),
                 SouthLogical,
                 "South",
                 worldLogical,
@@ -257,8 +319,99 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
     ////////////////////////////////////////////////////////
 
 
+    /////////////////////Small Mirrors//////////////////
 
-    //////////////////// Mirrors at the top and bottom of the volume///////////////////////////////
+
+    G4VPhysicalVolume *NorthMirrorPhysical =  new G4PVPlacement(
+                Ra,
+                G4ThreeVector(( BConst::box_width - BConst::box_height)/2.,0.,(BConst::box_width - BConst::detector_thickness)/2.-BConst::box_height),
+                smallMirrorLogical,
+                "mirror",
+                volumeLogical,
+                false,
+                0);
+
+    G4VPhysicalVolume *SouthMirrorPhysical =  new G4PVPlacement(
+                Ra,
+                G4ThreeVector(-( BConst::box_width - BConst::box_height)/2.,0.,-(BConst::box_width - BConst::detector_thickness)/2. + BConst::box_height),
+                smallMirrorLogical,
+                "mirror",
+                volumeLogical,
+                false,
+                0);
+
+
+    G4VPhysicalVolume *EastMirrorPhysical =  new G4PVPlacement(
+                new G4RotationMatrix(),
+                G4ThreeVector(-(BConst::box_width - BConst::detector_thickness)/2.+BConst::box_height, 0., (BConst::box_width - BConst::box_height)/2.),
+                smallMirrorLogical,
+                "mirror",
+                volumeLogical,
+                false,
+                0);
+
+    G4VPhysicalVolume *WestMirrorPhysical =  new G4PVPlacement(
+                new G4RotationMatrix(),
+                G4ThreeVector((BConst::box_width - BConst::detector_thickness)/2.-BConst::box_height, 0., -(BConst::box_width - BConst::box_height)/2.),
+                smallMirrorLogical,
+                "mirror",
+                volumeLogical,
+                false,
+                0);
+
+
+    //////////////////// WLS tubes //////////////////
+
+    G4VSolid *wls_tubeSolid = new G4Tubs("wlstube",
+                                   0,
+                                   BConst::wls_tube_diameter/2.,
+                                   BConst::wls_tube_length/2.,
+                                   0,
+                                   twopi);
+
+
+    wls_tubeLogical = new G4LogicalVolume(wls_tubeSolid,
+                                                    Bis_MSB,
+                                             "wlstube");
+
+
+    G4VPhysicalVolume *wlsSouthPhysical =  new G4PVPlacement(
+                new G4RotationMatrix(),
+                G4ThreeVector((-BConst::box_width + BConst::wls_tube_diameter)/2.,0., BConst::wls_tube_diameter/2. + BConst::detector_thickness/2.),
+                wls_tubeLogical,
+                "wlsSouth",
+                volumeLogical,
+                false,
+                0);
+
+    G4VPhysicalVolume *wlsNorthPhysical =  new G4PVPlacement(
+                new G4RotationMatrix(),
+                G4ThreeVector((BConst::box_width - BConst::wls_tube_diameter)/2., 0., -BConst::wls_tube_diameter/2. -BConst::detector_thickness/2.),
+                wls_tubeLogical,
+                "wlsNorth",
+                volumeLogical,
+                false,
+                0);
+
+    G4VPhysicalVolume *wlsEastPhysical =  new G4PVPlacement(
+                Ra,
+                G4ThreeVector(BConst::wls_tube_diameter/2. + BConst::detector_thickness/2., 0., (BConst::box_width - BConst::wls_tube_diameter)/2.),
+                wls_tubeLogical,
+                "wlsEast",
+                volumeLogical,
+                false,
+                0);
+
+    G4VPhysicalVolume *wlsWestPhysical =  new G4PVPlacement(
+                Ra,
+                G4ThreeVector(-BConst::wls_tube_diameter/2. - BConst::detector_thickness/2. , 0., (-BConst::box_width + BConst::wls_tube_diameter)/2.),
+                wls_tubeLogical,
+                "wlsWest",
+                volumeLogical,
+                false,
+                0);
+
+    //////////////////// Mirrors at the top and bottom of the volume//////////////////
 
 
     G4VSolid *mirrorSolid = new G4Box("mirror",
@@ -298,15 +451,9 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
           WaveLength[i] = (300 + i*10)*nanometer;
           PhotonEnergy[num2 - (i+1)] = twopi*hbarc/WaveLength[i];
           EfficiencyMirrors[i] = 0.0;
-          MirrorReflectivity[i]=0.1; //ya tut
+          MirrorReflectivity[i]=0.8; //ya tut
         }
-        /*
-        G4double MirrorReflectivity[num2]=
-          {0.87,0.88,0.885,0.89,0.895,0.9,0.905,0.91,0.915,0.92,0.923,0.9245,
-           0.926,0.928,0.93,0.935,0.936,0.937,0.938,0.94,0.94,0.939,0.9382,
-           0.938,0.937,0.937,0.936,0.935,0.934,0.932,0.93,0.928,0.926,0.924,
-           0.922,0.92};
-        */
+
         G4MaterialPropertiesTable* MirrorMPT = new G4MaterialPropertiesTable();
         MirrorMPT->AddProperty("REFLECTIVITY", PhotonEnergy, MirrorReflectivity, num2);
         MirrorMPT->AddProperty("EFFICIENCY" , PhotonEnergy, EfficiencyMirrors,  num2);
@@ -317,17 +464,20 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
         OpMirrorSurface->SetModel(glisur);
         new G4LogicalSkinSurface("MirrorSurfT",
                      mirrorLogical, OpMirrorSurface);
-
+        new G4LogicalSkinSurface("MirrorSurfT",
+                     smallMirrorLogical, OpMirrorSurface);
 
         OpMirrorSurface->SetMaterialPropertiesTable(MirrorMPT);
 
 
 
     DefineOpticalBorders();
-
+    SetVisAttributes();
     G4cout << "_____________________________________________Volumes are made" << G4endl;
     return worldPhysical;
 }
+
+
 
 // Definition of absorbtion surfaces
 void B_DetectorConstruction::DefineOpticalBorders()
@@ -365,3 +515,40 @@ void B_DetectorConstruction::DefineOpticalBorders()
                                  EastLogical, OpVolumeKillSurface);
 }
 
+
+// Visual attributes
+void B_DetectorConstruction::SetVisAttributes()
+{
+    G4Color blue        = G4Color(0., 0., 1.);
+    G4Color green       = G4Color(0., 1., 0.);
+    G4Color red         = G4Color(1., 0., 0.);
+    G4Color white       = G4Color(1., 1., 1.);
+    G4Color cyan        = G4Color(0., 1., 1., 0.3);
+    G4Color magenda     = G4Color(1.,0.,1.);
+    G4Color DircColor   = G4Color(0.0, 0.0, 1.0, 0.2);
+    G4Color SensColor   = G4Color(0.0, 1.0, 1.0, 0.1);
+
+    G4VisAttributes *wlsVisAtt = new G4VisAttributes;
+    wlsVisAtt->SetColor(magenda);
+    wlsVisAtt->SetVisibility(true);
+    wlsVisAtt->SetForceSolid(true);
+
+    G4VisAttributes *mirrorVisAtt = new G4VisAttributes;
+    mirrorVisAtt->SetColor(blue);
+    mirrorVisAtt->SetVisibility(true);
+    mirrorVisAtt->SetForceSolid(true);
+
+
+    G4VisAttributes *detectorVisAtt = new G4VisAttributes;
+    detectorVisAtt->SetColor(white);
+    detectorVisAtt->SetVisibility(true);
+    detectorVisAtt->SetForceSolid(true);
+
+
+    wls_tubeLogical->SetVisAttributes(wlsVisAtt);
+    smallMirrorLogical->SetVisAttributes(mirrorVisAtt);
+    NorthLogical->SetVisAttributes(detectorVisAtt);
+    EastLogical->SetVisAttributes(detectorVisAtt);
+    WestLogical->SetVisAttributes(detectorVisAtt);
+    SouthLogical->SetVisAttributes(detectorVisAtt);
+}

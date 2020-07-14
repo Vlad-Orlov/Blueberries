@@ -19,8 +19,7 @@
 #include "G4SDManager.hh"
 #include "globals.hh"
 
-B_EventAction::B_EventAction(B_RunAction* runact, // @suppress("Class members should be properly initialized")
-        B_SteppingAction* steppingAction) :
+B_EventAction::B_EventAction(B_RunAction* runact, B_SteppingAction* steppingAction) :
 		runAction(runact), _steppingAction(steppingAction), printModulo(100)
 {
 	//  theCollectionID = -1;
@@ -75,8 +74,8 @@ void B_EventAction::EndOfEventAction(const G4Event* event)
 	for (G4int i = 0; i < nHit; i++) {
 		runAction->_TrackID[i] = (*THC)[i]->myData.TrackID;
 		runAction->_ParentID[i] = (*THC)[i]->myData.ParentID;
-		runAction->_Energy[i] = (*THC)[i]->myData.Energy;
-		runAction->_Time[i] = (*THC)[i]->myData.Time;
+        runAction->_Energy[i] = (*THC)[i]->myData.Energy;
+        runAction->_Time[i] = (*THC)[i]->myData.Time;
 		runAction->_PdgID[i] = (*THC)[i]->myData.PdgID;
 		runAction->_StationID[i] = (*THC)[i]->myData.StationID;
 		runAction->_X[i] = (*THC)[i]->myData.X;

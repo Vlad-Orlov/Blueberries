@@ -12,11 +12,12 @@
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4ParticleTableIterator.hh"
-
+#include "G4OpWLS.hh"
 #include "G4ProcessManager.hh"
 
 
 class G4Cerenkov;
+class G4OpWLS;
 class G4Scintillation;
 class G4OpAbsorption;
 class G4OpRayleigh;
@@ -43,6 +44,6 @@ protected:
 private:
   G4Cerenkov* theCerenkovProcess;
   G4Scintillation* theScintProcess;
-
+  G4OpWLS* theWlsProcess;
 
 };
