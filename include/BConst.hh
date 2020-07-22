@@ -1,8 +1,8 @@
 /*
  * BConst.hh
  *
- *  Created on: Oct 2, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #ifndef INCLUDE_BConst_HH_

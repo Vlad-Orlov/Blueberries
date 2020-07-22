@@ -1,8 +1,8 @@
 /*
  * B_SensitiveDetector.h
  *
- *  Created on: Oct 3, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #ifndef INCLUDE_B_SensitiveDetector_H_

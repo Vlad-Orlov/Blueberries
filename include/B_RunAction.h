@@ -1,8 +1,8 @@
 /*
  * B_RunAction.h
  *
- *  Created on: Oct 2, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #ifndef SRC_B_RunAction_H_

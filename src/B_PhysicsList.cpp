@@ -1,3 +1,9 @@
+/*
+ * B_Hit.cpp
+ *
+ *  Created on: July, 2020
+ *      Author: orlov
+ */
 #include "B_PhysicsList.h"
 
 

@@ -1,7 +1,7 @@
 /*
  * B_DetectorConstruction.cpp
  *
- *  Created on: Oct 2, 2018
+ *  Created on: July, 2020
  *      Author: orlov
  */
 

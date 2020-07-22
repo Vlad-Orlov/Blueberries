@@ -1,8 +1,8 @@
 /*
  * H_DetectorConstruction.h
  *
- *  Created on: Oct 2, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #ifndef B_DetectorConstruction_H_

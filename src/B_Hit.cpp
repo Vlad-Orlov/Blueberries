@@ -1,9 +1,10 @@
 /*
  * B_Hit.cpp
  *
- *  Created on: Oct 3, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
+
 
 #include "B_Hit.h"
 

@@ -1,8 +1,8 @@
 /*
  * B_Hit.h
  *
- *  Created on: Oct 3, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #ifndef SRC_B_Hit_H_

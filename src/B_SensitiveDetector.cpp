@@ -1,8 +1,8 @@
 /*
  * B_SensitiveDetector.cpp
  *
- *  Created on: Oct 3, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #include "B_SensitiveDetector.h"
@@ -41,9 +41,7 @@ G4bool B_SensitiveDetector::ProcessHitsL(G4Step* aStep, G4TouchableHistory* hist
 	return ProcessHits(aStep, hist);
 }
 
-G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep,
-		G4TouchableHistory*)
-{
+G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory*){
 
 	G4Track* aTrack = aStep->GetTrack();
 	G4ThreeVector globalPosition = aStep->GetPostStepPoint()->GetPosition();

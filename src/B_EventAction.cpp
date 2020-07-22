@@ -1,8 +1,8 @@
 /*
  * B_EventAction.cpp
  *
- *  Created on: Oct 2, 2018
- *      Author: vsevolod
+ *  Created on: July, 2020
+ *      Author: orlov
  */
 
 #include "B_EventAction.h"
