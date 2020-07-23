@@ -24,7 +24,7 @@ void B_PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
 
      _particleGun->SetParticleDefinition(particle);
      _particleGun->SetParticleMomentumDirection(direction);
-     _particleGun->SetParticleEnergy(2*GeV);
+     _particleGun->SetParticleEnergy(12*GeV);
      _particleGun->SetParticlePosition(position);
      _particleGun->GeneratePrimaryVertex(anEvent);
 

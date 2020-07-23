@@ -73,6 +73,7 @@ private:
       G4Material *LXe;
       G4Material *SiO2;
       G4Material *Bis_MSB;
+      G4Material *Aerogel;
 
 
 

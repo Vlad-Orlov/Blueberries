@@ -18,6 +18,8 @@ struct HitData
   G4double Py;
   G4double Pz;
   G4double Momentum;
+  G4double Wavelength;
+
 };
 
 #endif

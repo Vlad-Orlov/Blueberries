@@ -20,7 +20,7 @@ namespace BConst{
     const G4double worldSizeZ = 1*m;
 
     const G4double box_width  = 50.*cm;
-    const G4double box_height = 3.*cm;
+    const G4double box_height = 1.*cm;
     const G4double detector_thickness  = 1.*mm;
     const G4double mirror_thickness  = 1.*mm;
 

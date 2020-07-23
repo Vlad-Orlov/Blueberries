@@ -13,7 +13,7 @@
 #/run/numberOfThreads 5
 
 
-/vis/scene/add/axes
+/vis/scene/add/axes 0 0 0 10 cm
 
 /run/verbose 0
 /event/verbose 0

@@ -68,6 +68,7 @@ G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory*){
 	newHit->myData.TrackID = aTrack->GetTrackID();
 	newHit->myData.ParentID = aTrack->GetParentID();
 	newHit->myData.Energy = aTrack->GetKineticEnergy();
+    newHit->myData.Wavelength = (twopi * hbarc / aTrack->GetKineticEnergy()) / nm;
 	newHit->myData.PdgID = aTrack->GetParticleDefinition()->GetPDGEncoding();
 	newHit->myData.Time = aTrack->GetGlobalTime();
     newHit->myData.X = globalPosition.x();
@@ -84,7 +85,7 @@ G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory*){
     else if (PreName == "volume" && PostName == "East") newHit->myData.StationID = 4;
     else return false;
 
-
+    aTrack->SetTrackStatus(fStopAndKill);
 	// Insert this hit
 	_Collection->insert(newHit);
 	newHit->Draw();

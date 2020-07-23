@@ -85,6 +85,8 @@ void B_EventAction::EndOfEventAction(const G4Event* event)
 		runAction->_Py[i] = (*THC)[i]->myData.Py;
 		runAction->_Pz[i] = (*THC)[i]->myData.Pz;
         runAction->_Momentum[i] = (*THC)[i]->myData.Momentum;
+        runAction->_Wavelength[i] = (*THC)[i]->myData.Wavelength;
+
 	}
 
 	runAction->_EventID = eventNum;
