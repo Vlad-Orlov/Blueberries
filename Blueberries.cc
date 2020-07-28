@@ -32,11 +32,13 @@ int main(int argc, char** argv)
 	if ( argc == 1 ) {
 		ui = new G4UIExecutive(argc, argv);
 	}
-	G4long myseed = 345354;
+    G4long myseed = G4long(argv[3]);
+
 
 	G4Random::setTheEngine(new CLHEP::RanecuEngine);
-	G4Random::setTheSeed(myseed);
+    G4Random::setTheSeed(myseed);
 
+    G4cout << "Seed: " << G4Random::getTheSeed() << G4endl;
 	// Run manager initialization
 	G4RunManager* runManager = new G4RunManager;
 
@@ -51,7 +53,7 @@ int main(int argc, char** argv)
 
 
     B_RunAction* runAction = new B_RunAction;
-    if (argc == 3) runAction->SetOutputFileName(G4String(argv[2]));
+    if (argc == 4) runAction->SetOutputFileName(G4String(argv[2]));
 	runManager->SetUserAction(runAction);
 
     B_PrimaryGeneratorAction* genAction = new B_PrimaryGeneratorAction();

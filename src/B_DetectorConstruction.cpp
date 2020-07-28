@@ -72,7 +72,7 @@ void B_DetectorConstruction::DefineMateials() {
     Aerogel->AddElement(Si, natoms = 1);
     Aerogel->AddElement(O , natoms = 2);
 
-    const G4int num = 50;
+    const G4int num = 36;
     G4double WaveLength[num];
     G4double Absorption[num];      // Default value for absorption
     G4double AirAbsorption[num];
@@ -81,7 +81,7 @@ void B_DetectorConstruction::DefineMateials() {
     G4double AerogelRefractiveIndex[num];
 
     for (int i=0; i<num; i++) {
-        WaveLength[i] = (200 + i*10)*nanometer;
+        WaveLength[i] = (300 + i*10)*nanometer;
         Absorption[i] = 100*m;      // Fake number for no absorption
         AirAbsorption[i] = 100*m;   // Place small value to kill photons
         AirRefractiveIndex[i] = 1.; // Rough air refraction
@@ -91,7 +91,7 @@ void B_DetectorConstruction::DefineMateials() {
          length, calculate it here
          mean free path length - taken as probablility equal 1/e
          that the photon will be absorbed */
-        AerogelRefractiveIndex[i] = 1.47;
+        AerogelRefractiveIndex[i] = 1.47; // change rindex
     }
 
 
@@ -148,8 +148,8 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                                                           "volume",
                                                           worldLogical,
                                                           false,
-                                                          0); 
-    
+                                                          0);
+
     //////////////// Placement of the detectors ///////////////////////
     G4VSolid *detectorSolid = new G4Box("detector",
                                         BConst::detector_thickness/2.,
@@ -254,7 +254,7 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
       WaveLength[i] = (200 + i*10)*nanometer;
       PhotonEnergy[num2 - (i+1)] = twopi*hbarc/WaveLength[i];
       EfficiencyMirrors[i] = 0.0;
-      MirrorReflectivity[i]=1; //ya tut
+      MirrorReflectivity[i]=1.0;
     }
 
     G4MaterialPropertiesTable* MirrorMPT = new G4MaterialPropertiesTable();

@@ -20,7 +20,7 @@
 #include "globals.hh"
 
 B_EventAction::B_EventAction(B_RunAction* runact, B_SteppingAction* steppingAction) :
-		runAction(runact), _steppingAction(steppingAction), printModulo(100)
+        runAction(runact), _steppingAction(steppingAction), printModulo(50)
 {
 	//  theCollectionID = -1;
 }
@@ -41,6 +41,9 @@ void B_EventAction::BeginOfEventAction(const G4Event* event)
 	theCollectionID =
 			G4SDManager::GetSDMpointer()->GetCollectionID("Collection");
 	//	}
+
+    // Setting the number of photons to 0 for further counting
+    runAction->_nPart = 0;
 
 	_steppingAction->Reset();
 	_steppingAction->ResetPerEvent();
@@ -74,18 +77,18 @@ void B_EventAction::EndOfEventAction(const G4Event* event)
 	for (G4int i = 0; i < nHit; i++) {
 		runAction->_TrackID[i] = (*THC)[i]->myData.TrackID;
 		runAction->_ParentID[i] = (*THC)[i]->myData.ParentID;
-        runAction->_Energy[i] = (*THC)[i]->myData.Energy;
-        runAction->_Time[i] = (*THC)[i]->myData.Time;
+        runAction->_Energy[i] = (*THC)[i]->myData.Energy / MeV;
+        runAction->_Time[i] = (*THC)[i]->myData.Time / ps;
 		runAction->_PdgID[i] = (*THC)[i]->myData.PdgID;
 		runAction->_StationID[i] = (*THC)[i]->myData.StationID;
-		runAction->_X[i] = (*THC)[i]->myData.X;
-		runAction->_Y[i] = (*THC)[i]->myData.Y;
-		runAction->_Z[i] = (*THC)[i]->myData.Z;
-		runAction->_Px[i] = (*THC)[i]->myData.Px;
-		runAction->_Py[i] = (*THC)[i]->myData.Py;
-		runAction->_Pz[i] = (*THC)[i]->myData.Pz;
-        runAction->_Momentum[i] = (*THC)[i]->myData.Momentum;
-        runAction->_Wavelength[i] = (*THC)[i]->myData.Wavelength;
+        runAction->_X[i] = (*THC)[i]->myData.X / mm;
+        runAction->_Y[i] = (*THC)[i]->myData.Y / mm;
+        runAction->_Z[i] = (*THC)[i]->myData.Z / mm;
+        runAction->_Px[i] = (*THC)[i]->myData.Px / MeV;
+        runAction->_Py[i] = (*THC)[i]->myData.Py / MeV;
+        runAction->_Pz[i] = (*THC)[i]->myData.Pz / MeV;
+        runAction->_Momentum[i] = (*THC)[i]->myData.Momentum / MeV;
+        runAction->_Wavelength[i] = (*THC)[i]->myData.Wavelength /nm;
 
 	}
 

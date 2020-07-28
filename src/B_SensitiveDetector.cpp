@@ -13,11 +13,12 @@
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
 
-B_SensitiveDetector::B_SensitiveDetector(G4String name) : // @suppress("Class members should be properly initialized")
+B_SensitiveDetector::B_SensitiveDetector(G4String name) :
 G4VSensitiveDetector(name){
-	//  G4RunManager* runManager = G4RunManager::GetRunManager();
 	G4String HCname = "Collection";
 	collectionName.insert(HCname);
+    G4cout << "Sensitive detector created" << G4endl;
+
 }
 
 B_SensitiveDetector::~B_SensitiveDetector() {
@@ -64,6 +65,10 @@ G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory*){
 //    if (aParticle->GetCharge() == 0) return false;
 
     B_Hit* newHit = new B_Hit();
+
+    // Handling only optical photons
+    if (aParticle->GetDefinition()->GetParticleName() != "opticalphoton")
+        return false;
 
 	newHit->myData.TrackID = aTrack->GetTrackID();
 	newHit->myData.ParentID = aTrack->GetParentID();
