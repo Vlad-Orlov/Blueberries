@@ -288,7 +288,7 @@ void B_DetectorConstruction::DefineOpticalBorders()
 
     G4OpticalSurface* OpVolumeKillSurface =
             new G4OpticalSurface("VolumeKillSurface");
-    OpVolumeKillSurface->SetType(dielectric_metal);
+    OpVolumeKillSurface->SetType(dielectric_dielectric);
     OpVolumeKillSurface->SetFinish(polished);
     OpVolumeKillSurface->SetModel(glisur);
 
