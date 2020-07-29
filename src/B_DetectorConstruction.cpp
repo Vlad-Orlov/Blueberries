@@ -30,7 +30,7 @@ void B_DetectorConstruction::ConstructSDandField() {
     SouthLogical->SetSensitiveDetector(LSD);
     NorthLogical->SetSensitiveDetector(LSD);
     EastLogical->SetSensitiveDetector(LSD);
-    volumeLogical->SetSensitiveDetector(LSD);
+    layer1_Logical->SetSensitiveDetector(LSD);
 
     //    G4cout << "_____________________________________________Detectors are made" << G4endl;
 }
@@ -72,7 +72,7 @@ void B_DetectorConstruction::DefineMateials() {
     Aerogel->AddElement(Si, natoms = 1);
     Aerogel->AddElement(O , natoms = 2);
 
-    const G4int num = 36;
+    const G4int num = 51;
     G4double WaveLength[num];
     G4double Absorption[num];      // Default value for absorption
     G4double AirAbsorption[num];
@@ -81,7 +81,7 @@ void B_DetectorConstruction::DefineMateials() {
     G4double AerogelRefractiveIndex[num];
 
     for (int i=0; i<num; i++) {
-        WaveLength[i] = (300 + i*10)*nanometer;
+        WaveLength[i] = (200 + i*10)*nanometer;
         Absorption[i] = 100*m;      // Fake number for no absorption
         AirAbsorption[i] = 100*m;   // Place small value to kill photons
         AirRefractiveIndex[i] = 1.; // Rough air refraction
@@ -91,7 +91,7 @@ void B_DetectorConstruction::DefineMateials() {
          length, calculate it here
          mean free path length - taken as probablility equal 1/e
          that the photon will be absorbed */
-        AerogelRefractiveIndex[i] = 1.47; // change rindex
+        AerogelRefractiveIndex[i] = 1.1; // change rindex
     }
 
 
@@ -110,6 +110,9 @@ void B_DetectorConstruction::DefineMateials() {
     Vacuum->SetMaterialPropertiesTable(AirMPT);
     Aerogel->SetMaterialPropertiesTable(AerogelMPT);
 }
+
+
+
 
 G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
 
@@ -131,29 +134,80 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                                                          0);
 
 
-    G4VSolid *volumeSolid = new G4Box("volume",
+    //////////////////////////////////////////////////////////////////////
+
+    G4VSolid *layer1_Solid = new G4Box("layer1",
                                       BConst::box_width/2.,
-                                      BConst::box_height/2.,
+                                      BConst::layer1_height/2.,
                                       BConst::box_width/2.);
 
 
-    volumeLogical = new G4LogicalVolume(volumeSolid,
+    layer1_Logical = new G4LogicalVolume(layer1_Solid,
                                         Aerogel,
-                                        "volume");
+                                        "layer1");
 
 
-    G4VPhysicalVolume *volumePhysical = new G4PVPlacement(0,
-                                                          G4ThreeVector(),
-                                                          volumeLogical,
-                                                          "volume",
-                                                          worldLogical,
-                                                          false,
-                                                          0);
+    G4VPhysicalVolume *layer1_Physical = new G4PVPlacement(0,
+                                                           G4ThreeVector(),
+                                                           layer1_Logical,
+                                                           "layer1",
+                                                           worldLogical,
+                                                           false,
+                                                           0);
+
+    /////////////////////////////////////////////////////////////////////
+
+    G4VSolid *layer2_Solid = new G4Box("layer2",
+                                      BConst::box_width/2.,
+                                      BConst::layer2_height/2.,
+                                      BConst::box_width/2.);
+
+
+    layer2_Logical = new G4LogicalVolume(layer2_Solid,
+                                        Aerogel,
+                                        "layer2");
+
+
+    G4VPhysicalVolume *layer2_Physical = new G4PVPlacement(0,
+                                                           G4ThreeVector(0.,
+                                                                         (BConst::layer1_height + BConst::layer2_height)/2. + BConst::mirror_thickness,
+                                                                         0.),
+                                                           layer2_Logical,
+                                                           "layer2",
+                                                           worldLogical,
+                                                           false,
+                                                           0);
+
+    /////////////////////////////////////////////////////////////////////
+
+    G4VSolid *layer3_Solid = new G4Box("layer3",
+                                      BConst::box_width/2.,
+                                      BConst::layer3_height/2.,
+                                      BConst::box_width/2.);
+
+
+    layer3_Logical = new G4LogicalVolume(layer3_Solid,
+                                        Aerogel,
+                                        "layer3");
+
+
+    G4VPhysicalVolume *layer3_Physical = new G4PVPlacement(0,
+                                                           G4ThreeVector(0.,
+                                                                         (BConst::layer1_height + BConst::layer3_height)/2. + 2*BConst::mirror_thickness + BConst::layer2_height,
+                                                                         0.),
+                                                           layer3_Logical,
+                                                           "layer3",
+                                                           worldLogical,
+                                                           false,
+                                                           0);
+
+    /////////////////////////////////////////////////////////////////////
+
 
     //////////////// Placement of the detectors ///////////////////////
     G4VSolid *detectorSolid = new G4Box("detector",
                                         BConst::detector_thickness/2.,
-                                        BConst::box_height/2.,
+                                        BConst::layer1_height/2.,
                                         BConst::box_width/2.);
 
     NorthLogical = new G4LogicalVolume(detectorSolid,
@@ -227,21 +281,37 @@ G4VPhysicalVolume* B_DetectorConstruction::DefineVolumes(){
                                         "mirror");
 
 
-    G4VPhysicalVolume *mirrorTopPhysical = new G4PVPlacement(0,
-                                                             G4ThreeVector(0., (BConst::mirror_thickness/2 + BConst::box_height/2), 0.),
-                                                             mirrorLogical,
-                                                             "mirrorTop",
-                                                             worldLogical,
-                                                             false,
-                                                             0);
+    G4VPhysicalVolume *mirror1 = new G4PVPlacement(0,
+                                                    G4ThreeVector(0., -(BConst::mirror_thickness/2 + BConst::layer1_height/2), 0.),
+                                                    mirrorLogical,
+                                                    "mirror1",
+                                                    worldLogical,
+                                                    false,
+                                                    0);
 
-    G4VPhysicalVolume *mirrorBottomPhysical = new G4PVPlacement(0,
-                                                                G4ThreeVector(0., -(BConst::mirror_thickness/2 + BConst::box_height/2), 0.),
-                                                                mirrorLogical,
-                                                                "mirrorTop",
-                                                                worldLogical,
-                                                                false,
-                                                                0);
+    G4VPhysicalVolume *mirror12 = new G4PVPlacement(0,
+                                                   G4ThreeVector(0., (BConst::mirror_thickness/2 + BConst::layer1_height/2), 0.),
+                                                   mirrorLogical,
+                                                   "mirror12",
+                                                   worldLogical,
+                                                   false,
+                                                   0);
+
+    G4VPhysicalVolume *mirror23 = new G4PVPlacement(0,
+                                                    G4ThreeVector(0., (3*BConst::mirror_thickness/2 + BConst::layer1_height/2) + BConst::layer2_height, 0.),
+                                                    mirrorLogical,
+                                                    "mirror23",
+                                                    worldLogical,
+                                                    false,
+                                                    0);
+
+    G4VPhysicalVolume *mirror3 = new G4PVPlacement(0,
+                                                   G4ThreeVector(0., (5*BConst::mirror_thickness/2 + BConst::layer1_height/2) + BConst::layer2_height + BConst::layer3_height, 0.),
+                                                   mirrorLogical,
+                                                   "mirror3",
+                                                   worldLogical,
+                                                   false,
+                                                   0);
 
 
     // Define mirror surface

@@ -84,10 +84,10 @@ G4bool B_SensitiveDetector::ProcessHits(G4Step* aStep, G4TouchableHistory*){
 	newHit->myData.Py = aTrack->GetMomentum().y();
 	newHit->myData.Pz = aTrack->GetMomentum().z();
 
-         if (PreName == "volume" && PostName == "North") newHit->myData.StationID = 1;
-    else if (PreName == "volume" && PostName == "South") newHit->myData.StationID = 2;
-    else if (PreName == "volume" && PostName == "West") newHit->myData.StationID = 3;
-    else if (PreName == "volume" && PostName == "East") newHit->myData.StationID = 4;
+         if (PreName == "layer1" && PostName == "North") newHit->myData.StationID = 1;
+    else if (PreName == "layer1" && PostName == "South") newHit->myData.StationID = 2;
+    else if (PreName == "layer1" && PostName == "West") newHit->myData.StationID = 3;
+    else if (PreName == "layer1" && PostName == "East") newHit->myData.StationID = 4;
     else return false;
 
     aTrack->SetTrackStatus(fStopAndKill);

@@ -20,12 +20,15 @@ namespace BConst{
     const G4double worldSizeZ = 1*m;
 
     const G4double box_width  = 50.*cm;
-    const G4double box_height = 1.*cm;
     const G4double detector_thickness  = 1.*mm;
     const G4double mirror_thickness  = 1.*mm;
 
-    const G4double wls_tube_diameter = box_height;
-    const G4double wls_tube_length = box_width - box_height - detector_thickness;
+    const G4double layer1_height = 1.*cm;
+    const G4double layer2_height = 4.*cm;
+    const G4double layer3_height = 3.*cm;
+
+//    const G4double wls_tube_diameter = box_height;
+//    const G4double wls_tube_length = box_width - box_height - detector_thickness;
 
 }
 

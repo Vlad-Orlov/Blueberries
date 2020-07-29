@@ -58,7 +58,11 @@ public:
       G4LogicalVolume *SouthLogical;
       G4LogicalVolume *NorthLogical;
       G4LogicalVolume *EastLogical;
-      G4LogicalVolume *volumeLogical;
+
+      G4LogicalVolume *layer1_Logical;
+      G4LogicalVolume *layer2_Logical;
+      G4LogicalVolume *layer3_Logical;
+
       G4LogicalVolume *mirrorLogical;
       G4LogicalVolume *wls_tubeLogical;
       G4LogicalVolume *smallMirrorLogical;
